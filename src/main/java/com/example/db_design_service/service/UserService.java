@@ -7,10 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import javax.annotation.Resource;
 import java.util.List;
 @Service
 public class UserService {
-    @Autowired
+    @Resource
     private UserDao userDao;
 
 
@@ -25,5 +26,11 @@ public class UserService {
 
     public List<UserLogin> selectAllUserLogin() {
         return userDao.findAllUserLogin();
+    }
+
+   public boolean insertUser(User user)
+    {
+        userDao.insertUser(user);
+        return true;
     }
 }
