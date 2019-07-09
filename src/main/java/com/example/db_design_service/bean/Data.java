@@ -44,4 +44,8 @@ public class Data {
     public void setName(String name) {
         this.name = name;
     }
+    public String toString()
+    {
+        return this.introduction+","+this.avatar+","+this.name;
+    }
 }

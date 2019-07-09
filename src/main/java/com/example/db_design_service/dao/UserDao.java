@@ -23,6 +23,9 @@ public interface UserDao {
 
     @Select("SELECT user_phone_number,user_password FROM user")
     List<UserLogin> findAllUserLogin();
+
+    @Select("SELECT * FROM user where user_phone_number=#{user_phone_number}")
+    User findUserInfo(@Param("user_phone_number") String user_phone_number);
     /**
      * 插入用户信息
      */

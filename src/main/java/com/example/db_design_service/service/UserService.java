@@ -33,4 +33,8 @@ public class UserService {
         userDao.insertUser(user);
         return true;
     }
+    public User selectUserInfo(String user_phone_number)
+    {
+        return userDao.findUserInfo(user_phone_number);
+    }
 }

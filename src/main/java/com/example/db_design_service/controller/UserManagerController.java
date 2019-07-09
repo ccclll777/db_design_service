@@ -1,17 +1,15 @@
 package com.example.db_design_service.controller;
 
+import com.example.db_design_service.RedisUtils;
 import com.example.db_design_service.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import com.example.db_design_service.bean.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -20,10 +18,12 @@ import java.util.Map;
 public class UserManagerController {
     @Resource
     private UserService userService;
+    @Resource
+    private RedisUtils redisUtils;
     private static final Logger logger = LoggerFactory.getLogger(UserManagerController.class);
-
     @RequestMapping(value ="/login",method = RequestMethod.POST)
     public RespBean UserLogin(@Valid @RequestBody Map<String,Object> request, BindingResult bindingResult) {
+
 
         if (bindingResult.hasErrors()) {
             System.out.println(bindingResult.getFieldError().getDefaultMessage());
@@ -39,7 +39,16 @@ public class UserManagerController {
                 logger.info(username);
                 logger.info(password);
                 logger.info("登录成功");
-                return new RespBean(20000, new Token(userlogin.getUser_phone_number()+"+++"+userlogin.getUser_password()));
+
+                //token生成  用户信息redis缓存
+                Token token =new Token(userlogin.getUser_phone_number()+"+++"+userlogin.getUser_password());
+                String [] roles = new String[1];
+                roles[0] = "admin";
+                User user = userService.selectUserInfo(userlogin.getUser_phone_number());
+                Data data = new Data(roles,user.getUser_phone_number(),user.getUser_id_number(),user.getUser_real_name());
+                        redisUtils.set(token.getToken(),data.toString());
+                        redisUtils.get(token.getToken());
+                return new RespBean(20000,token);
 
             }
             else
@@ -55,8 +64,9 @@ public class UserManagerController {
     public UserInfo UserInfo(@RequestParam String token) {
         String [] roles = new String[1];
         roles[0] = "admin";
-
-        return new UserInfo(20000,new Data(roles,"111","https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif","11111"));
+        String userinfo = redisUtils.get(token);
+        String []  data = userinfo.split(",");
+        return new UserInfo(20000,new Data(roles,data[0],data[1],data[2]));
     }
     @RequestMapping(value ="/register",method = RequestMethod.POST)
     public RespBean UserRegister(@Valid @RequestBody Map<String,Object> request, BindingResult bindingResult) {
@@ -94,9 +104,6 @@ public class UserManagerController {
                 {
                     type = 0;
                 }
-
-                java.util.Date  date=new java.util.Date();
-                java.sql.Date  data1=new java.sql.Date(date.getTime());
                 int gender = -1;
                 if(user_gender.equals("女"))
                 {
@@ -106,7 +113,7 @@ public class UserManagerController {
                 {
                     gender = 1;
                 }
-                User user  = new User(username,password,user_email,user_real_name,type,data1,user_id_number,gender,user_address);
+                User user  = new User(username,password,user_email,user_real_name,type,user_id_number,gender,user_address);
                 boolean flag = userService.insertUser(user);
                 if(flag)
                 {
@@ -124,14 +131,6 @@ public class UserManagerController {
         return new RespBean(60204, new Token("admin-token"));
 
     }
-//    @Autowired
-//    private jdbc_test test2  ;
-//
-//    @RequestMapping("/list")
-//    private List<user> getStus(){
-//        logger.info("从数据库读取Student集合");
-//        logger.info(test2.getList().toString());
-//        return test2.getList();
-//    }
+
 
 }

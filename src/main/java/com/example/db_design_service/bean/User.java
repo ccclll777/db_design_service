@@ -9,13 +9,12 @@ public class User {
     private String user_email;
     private String user_real_name;
     private int user_type;
-//    private Date registration_time;
     private String user_id_number;
     private int user_gender;
     private String user_address;
 
     public User(String user_phone_number, String user_password, String user_email , String user_real_name
-            , int user_type , Date registration_time ,String user_id_number
+            , int user_type ,String user_id_number
             ,int user_gender ,String  user_address)
     {
         this.user_phone_number = user_phone_number;
