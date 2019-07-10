@@ -12,8 +12,7 @@ public interface UserDao {
     /**
      * 通过名字查询用户信息
      */
-//    @Select("SELECT * FROM user WHERE name = #{name}")
-//    User findUserByName(@Param("name") String name);
+
 
     /**
      * 查询所有用户信息
