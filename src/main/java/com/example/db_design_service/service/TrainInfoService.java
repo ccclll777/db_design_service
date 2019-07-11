@@ -17,9 +17,13 @@ public class TrainInfoService {
     {
         return trainInfoDao.findAllTrainInfo();
     }
-
+    public List<TrainInfo> selectAllTrainInfo(int offset,int limit)
+    {
+        return trainInfoDao.findTrainInfoByLimit(offset,limit);
+    }
     public TrainInfo selectTrainInfo(String train_number)
     {
         return trainInfoDao.findTrainInfo(train_number);
     }
+
 }

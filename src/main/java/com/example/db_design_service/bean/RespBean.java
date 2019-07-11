@@ -1,32 +1,32 @@
 package com.example.db_design_service.bean;
 
 public class RespBean {
-    private int code;
-    private Token data;
+    private int status;
+    private String success;
 
 
 
-    public RespBean(int code, Token data) {
+    public RespBean(int status, String success) {
 
-        this.code = code;
-        this.data  =data;
+        this.status = status;
+        this.success  =success;
 
     }
 
 
-    public int getCode() {
-        return code;
+    public int getStatus() {
+        return status;
     }
 
-    public void setCode(int code) {
-        this.code = code;
-    }
-    public Token getData() {
-        return data;
+    public void setStatus(int status) {
+        this.status = status;
     }
 
-    public void setData(Token data) {
-        this.data = data;
+    public String getSuccess() {
+        return success;
     }
 
+    public void setSuccess(String success) {
+        this.success = success;
+    }
 }

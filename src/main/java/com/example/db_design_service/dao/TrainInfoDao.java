@@ -11,10 +11,15 @@ import java.util.List;
 @Mapper
 public interface TrainInfoDao {
 
-    @Select("SELECT * FROM train_info")
+    @Select("SELECT * FROM train_info LIMIT 100")
     List<TrainInfo> findAllTrainInfo();
+
+    @Select("SELECT * FROM train_info LIMIT #{limit} OFFSET  #{offset}")
+    List<TrainInfo> findTrainInfoByLimit(@Param("offset") int offset,@Param("limit") int limit);
 
     @Select("SELECT * FROM train_info where train_number = #{train_number}")
     TrainInfo findTrainInfo(@Param("train_number") String train_number);
+
+
 
 }

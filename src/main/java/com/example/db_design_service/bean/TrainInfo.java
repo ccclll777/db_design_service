@@ -13,12 +13,12 @@ public class TrainInfo {
     private String train_running_time;
 
 
-    public String getTrainæ_no() {
+    public String getTrain_no() {
         return train_no;
     }
 
-    public void setTrainæ_no(String trainæ_no) {
-        this.train_no = trainæ_no;
+    public void setTrain_no(String train_no) {
+        this.train_no = train_no;
     }
 
     public String getTrain_number() {
