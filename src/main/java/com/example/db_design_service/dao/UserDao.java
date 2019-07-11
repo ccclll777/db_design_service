@@ -29,12 +29,12 @@ public interface UserDao {
      * 插入用户信息
      */
 
-//    @Insert("INSERT INTO user(user_phone_number, user_password,user_email,user_real_name,user_type,registeration_time,user_id_number,user_gender,user_address) " +
-//            "VALUES(#{user_phone_number}, #{user_password}, #{user_email},#{user_real_name},#{user_type},#{registeration_time},#{user_id_number},#{user_gender},#{user_address})")
-//    void insertUser(@Param("user_phone_number") String user_phone_number, @Param("user_password") String user_password,
-//                    @Param("user_email") String user_email, @Param("user_real_name") String user_real_name, @Param("user_type") String user_type, @Param("registeration_time")
-//                            Date registeration_time, @Param("user_id_number") String user_id_number, @Param("user_gender") String user_gender, @Param("user_address") String user_address);
     @Insert("insert into  user (user_phone_number,user_password,user_email,user_real_name,user_type,user_id_number,user_gender,user_address) VALUES ( #{user.user_phone_number}, #{user.user_password}, #{user.user_email},#{user.user_real_name},#{user.user_type},#{user.user_id_number},#{user.user_gender},#{user.user_address})")
     void insertUser(@Param("user") User user);
+    @Update("update user set user_real_name = #{user_real_name} , user_email = #{user_email} , user_type = #{user_type} , user_gender = #{user_gender} ,user_id_number = #{user_id_number} , user_address = #{user_address} where user_phone_number = #{user_phone_number}")
+    void UptateUser(@Param("user_real_name") String user_real_name, @Param("user_email") String user_email,@Param("user_type") int user_type,@Param("user_gender") int user_gender,@Param("user_id_number") String user_id_number, @Param("user_address") String user_address, @Param("user_phone_number") String user_phone_number);
+
+    @Update("update user set user_password = #{user_password} where user_phone_number = #{user_phone_number}")
+    void UptatePassword(@Param("user_password") String user_password, @Param("user_phone_number") String user_phone_number);
 
 }

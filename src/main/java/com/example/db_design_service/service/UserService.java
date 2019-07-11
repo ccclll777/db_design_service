@@ -3,6 +3,7 @@ package com.example.db_design_service.service;
 import com.example.db_design_service.bean.User;
 import com.example.db_design_service.bean.UserLogin;
 import com.example.db_design_service.dao.UserDao;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +16,6 @@ public class UserService {
     private UserDao userDao;
 
 
-
-
-    /**
-     * 查找所有用户
-     */
     public List<User> selectAllUser() {
         return userDao.findAllUser();
     }
@@ -36,5 +32,14 @@ public class UserService {
     public User selectUserInfo(String user_phone_number)
     {
         return userDao.findUserInfo(user_phone_number);
+    }
+
+    public void UpdateUserInfe(String user_real_name, String user_email, int user_type,  int user_gender,  String user_id_number,  String user_address,String user_phone_number)
+    {
+        userDao.UptateUser(user_real_name,user_email,user_type,user_gender,user_id_number,user_address,user_phone_number);
+    }
+    public void UpdatePassword(String user_password,String user_phone_number)
+    {
+        userDao.UptatePassword(user_password,user_phone_number);
     }
 }
