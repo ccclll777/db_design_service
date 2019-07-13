@@ -16,4 +16,9 @@ public class TrainScheduleService {
     {
             return trainScheduleDao.searchTrainSchedule(start_station,end_station);
     }
+
+    public List<TrainScheduleInfo> searchTrainScheduleInfoList(String train_no, String start_no,String end_no)
+    {
+        return trainScheduleDao.searchTrainScheduleList(train_no,start_no,end_no);
+    }
 }

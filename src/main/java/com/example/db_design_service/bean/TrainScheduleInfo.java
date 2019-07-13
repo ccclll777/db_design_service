@@ -1,6 +1,7 @@
 package com.example.db_design_service.bean;
 
 public class TrainScheduleInfo {
+    private String train_no;
     private String train_number;
     private String start_station;
     private String end_station;
@@ -23,7 +24,8 @@ public class TrainScheduleInfo {
         return start_station;
     }
 
-    public TrainScheduleInfo(String train_number, String start_station, String end_station, String start_no, String end_no, String start_time, String arrive_time, String start_running_time, String end_running_time) {
+    public TrainScheduleInfo(String train_no,String train_number, String start_station, String end_station, String start_no, String end_no, String start_time, String arrive_time, String start_running_time, String end_running_time) {
+        this.train_no = train_no;
         this.train_number = train_number;
         this.start_station = start_station;
         this.end_station = end_station;
@@ -94,5 +96,13 @@ public class TrainScheduleInfo {
 
     public void setEnd_running_time(String end_running_time) {
         this.end_running_time = end_running_time;
+    }
+
+    public String getTrain_no() {
+        return train_no;
+    }
+
+    public void setTrain_no(String train_no) {
+        this.train_no = train_no;
     }
 }

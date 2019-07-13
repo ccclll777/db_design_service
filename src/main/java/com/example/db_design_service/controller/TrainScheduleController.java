@@ -26,11 +26,20 @@ public class TrainScheduleController {
     @RequestMapping(value ="/searchTrainSchedule",method = RequestMethod.GET)
     public TrainScheduleReturnData GetTrainScheduleInfo(@RequestParam String train_start_station, String train_end_station, String date) {
 
-        logger.info(train_start_station);
-        logger.info(train_end_station);
         List<TrainScheduleInfo> trainScheduleInfos = trainScheduleService.searchTrainScheduleInfo(train_start_station,train_end_station);
         return new TrainScheduleReturnData(1,trainScheduleInfos);
 
     }
 
+
+    @RequestMapping(value ="/getTrainScheduleList",method = RequestMethod.GET)
+    public TrainScheduleReturnData GetTrainScheduleInfoList(@RequestParam String train_start_station_no, String  train_end_station_no, String train_no) {
+
+
+        logger.info(train_start_station_no);
+        logger.info(train_end_station_no);
+        logger.info(train_no);
+        List<TrainScheduleInfo> trainScheduleInfos = trainScheduleService.searchTrainScheduleInfoList(train_no,train_start_station_no,train_end_station_no);
+        return new TrainScheduleReturnData(1,trainScheduleInfos);
+    }
 }
