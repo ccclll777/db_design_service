@@ -1,5 +1,11 @@
 package com.example.db_design_service.bean;
-
+/**
+ *
+ *
+ * 用户类  对应前端的个人信息查询
+ *
+ *在查询个人信息时作为给前端的返回数据
+ */
 public class UserInfo {
     private String user_real_name;
     private String user_phone_number;

@@ -14,6 +14,11 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
+
+/**
+ *
+ * 乘客管理的业务处理层
+ */
 @RestController
 @RequestMapping("/passenger")
 public class PassengerManagerController {
@@ -24,7 +29,16 @@ public class PassengerManagerController {
     private RedisUtils redisUtils;
 
     private static final Logger logger = LoggerFactory.getLogger(PassengerManagerController.class);
-    @RequestMapping(value ="/getpassengerinfo",method = RequestMethod.GET)
+
+    /**
+     *
+     * 根据用户  获取此用户下的乘客信息
+     *
+     * 对应前端的getPassengerInfo请求
+     * @param token
+     * @return
+     */
+    @RequestMapping(value ="/getPassengerInfo",method = RequestMethod.GET)
     public PassengerInfoReturnData getPassengerInfo(@RequestParam String token) {
 
         logger.info(redisUtils.get(token));
@@ -37,7 +51,16 @@ public class PassengerManagerController {
 
 
     }
-    @RequestMapping(value ="/addpassengerinfo",method = RequestMethod.POST)
+
+    /**
+     *
+     * 用户添加乘客
+     * 对应前端的addPassengerInfo请求
+     * @param request
+     * @param bindingResult
+     * @return
+     */
+    @RequestMapping(value ="/addPassengerInfo",method = RequestMethod.POST)
     public RespBean UserRegister(@Valid @RequestBody Map<String,Object> request, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
@@ -77,7 +100,16 @@ public class PassengerManagerController {
 
     }
 
-    @RequestMapping(value ="/deletepassengerinfo",method = RequestMethod.GET)
+
+    /**
+     *
+     * 删除乘客信息
+     * 对应前端的deletePassengerInfo请求
+     * @param token
+     * @param passenger_phone_number
+     * @return
+     */
+    @RequestMapping(value ="/deletePassengerInfo",method = RequestMethod.GET)
     public RespBean DeletePassengerInfo(@RequestParam String token,String passenger_phone_number) {
 
         logger.info(redisUtils.get(token));

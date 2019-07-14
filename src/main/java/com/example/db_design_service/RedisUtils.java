@@ -25,6 +25,13 @@ import org.springframework.stereotype.Component;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 
+/**
+ *使用redis做缓存
+ *
+ *缓存类  提供简单的get和set方法
+ *
+ * redis的配置在application.propertis中
+ */
 @Component
 public class RedisUtils {
     @Autowired

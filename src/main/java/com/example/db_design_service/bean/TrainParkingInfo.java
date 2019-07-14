@@ -1,5 +1,12 @@
 package com.example.db_design_service.bean;
 
+/**
+ *
+ *
+ * 列车时刻表类  数据库的train_parking_info表
+ * 存储列车的时刻信息
+ *
+ */
 public class TrainParkingInfo {
 
     private String train_number;

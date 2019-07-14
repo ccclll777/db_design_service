@@ -7,11 +7,24 @@ import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
+/**
+ *
+ *
+ * 列车时刻查询类  根据出发地和目的地查询符合条件的列车信息
+ * 以及列车的经停信息
+ */
 @Mapper
 public interface TrainScheduleDao {
 
 
-
+    /**
+     *
+     *
+     * 根据起始站和目的站查询符合条件的车次
+     * @param start_station
+     * @param end_station
+     * @return
+     */
     @Select("select C.train_no as train_no ,C.train_number as train_number ,\n" +
             " C.station_name as start_station ,D.station_name as end_station ,\n" +
             " C.station_no as start_no , D.station_no as  end_no  ,\n" +
@@ -27,6 +40,17 @@ public interface TrainScheduleDao {
             " B.station_name = #{end_station} \n" +
             " and A.station_no <B.station_no)")
     List<TrainScheduleInfo>  searchTrainSchedule(@Param("start_station") String start_station , @Param("end_station") String end_station);
+
+
+    /**
+     *
+     *  根据始发站和目的站查询
+     *  所有的经停站
+     * @param train_no
+     * @param start_no
+     * @param end_no
+     * @return
+     */
     @Select("select A.train_no as train_no, A.train_number as train_number ,\n" +
             "A.station_name as start_station ,B.station_name as end_station , \n" +
             " A.station_no as start_no , B.station_no as  end_no  ,\n" +

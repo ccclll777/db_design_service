@@ -1,5 +1,11 @@
 package com.example.db_design_service.bean;
 
+/**、
+ *乘客类   对应数据的passenger表
+ *
+ *提供get和set方法已经构造方法
+ *
+ */
 public class PassengerInfo {
     private String passenger_real_name;
     private String passenger_phone_number;

@@ -1,5 +1,11 @@
 package com.example.db_design_service.bean;
-
+/**
+ *
+ *
+ * 作为查询用户信息查询的返回
+ *
+ *
+ */
 public class UserInfoReturnData {
 
    private int status;

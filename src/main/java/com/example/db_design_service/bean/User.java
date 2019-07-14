@@ -3,6 +3,13 @@ package com.example.db_design_service.bean;
 import javax.xml.crypto.Data;
 import java.util.Date;
 
+/**
+ *
+ *
+ * 用户类  对应与数据库的用户表user
+ *
+ *
+ */
 public class User {
     private String user_phone_number;
     private String user_password;

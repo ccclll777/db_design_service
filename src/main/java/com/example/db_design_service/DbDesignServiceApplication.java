@@ -8,6 +8,14 @@ import org.springframework.cache.annotation.EnableCaching;
 @SpringBootApplication
 @MapperScan("org.sang.mapper")
 @EnableCaching
+
+/**
+ * spring boot 启动类
+ *
+ *
+ *
+ */
+
 public class DbDesignServiceApplication {
 
     public static void main(String[] args) {

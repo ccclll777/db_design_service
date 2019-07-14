@@ -13,6 +13,11 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
+/**
+ *
+ * 有关用户信息的业务处理层
+ *
+ */
 @RestController
 @RequestMapping("/user")
 public class UserManagerController {
@@ -21,6 +26,16 @@ public class UserManagerController {
     @Resource
     private RedisUtils redisUtils;
     private static final Logger logger = LoggerFactory.getLogger(UserManagerController.class);
+
+    /**
+     *
+     * 用户登录
+     *
+     * 对应前端的 login请求
+     * @param request
+     * @param bindingResult
+     * @return
+     */
     @RequestMapping(value ="/login",method = RequestMethod.POST)
     public RespBean UserLogin(@Valid @RequestBody Map<String,Object> request, BindingResult bindingResult) {
 
@@ -30,9 +45,13 @@ public class UserManagerController {
         }
         String username = (String) request.get("user_name");
         String password = (String) request.get("password");
+
         try
         {
-
+            /**
+             *
+             * 查找是否有此用户
+             */
 
             List<UserLogin> userlogins = userService.selectAllUserLogin();
 
@@ -53,6 +72,10 @@ public class UserManagerController {
 //                roles[0] = "admin";
 //                User user = userService.selectUserInfo(userlogin.getUser_phone_number());
 //                UserInfoReturnData data = new UserInfoReturnData(roles,user.getUser_phone_number(),user.getUser_id_number(),user.getUser_real_name());
+
+                    /**
+                     * 将用户登陆信息存入token中
+                     */
                     redisUtils.set(userlogin.getUser_phone_number()+"msbfajshbadsmnfbasmfa"+userlogin.getUser_password(),token);
 //                        redisUtils.get(token.getToken());
 
@@ -69,6 +92,16 @@ public class UserManagerController {
         }
         return new RespBean(404, "失败");
     }
+
+    /**
+     * 登陆成功后，向前端返回cookie中的内容 作为用户登陆的标记
+     *
+     * 并且将用户登陆信息存入token中
+     *
+     * 对应前端的getAdminInfo请求
+     * @param token
+     * @return
+     */
     @RequestMapping(value ="/info",method = RequestMethod.GET)
     public UserInfoReturnData GetUserInfo(@RequestParam String token) {
         try {
@@ -83,6 +116,16 @@ public class UserManagerController {
         }
 
     }
+
+    /**
+     *
+     * 用户注册
+     *
+     * 对应前端的register请求
+     * @param request
+     * @param bindingResult
+     * @return
+     */
     @RequestMapping(value ="/register",method = RequestMethod.POST)
     public RespBean UserRegister(@Valid @RequestBody Map<String,Object> request, BindingResult bindingResult) {
 
@@ -99,6 +142,10 @@ public class UserManagerController {
         String user_address = (String)request.get("user_address");
         String user_type = (String)request.get("user_type");
         try {
+
+            /**
+             * 查询此用户是否已经注册
+             */
             List<UserLogin> userlogins = userService.selectAllUserLogin();
             for (UserLogin userlogin : userlogins) {
                 if(userlogin.getUser_phone_number().equals(username))
@@ -115,6 +162,11 @@ public class UserManagerController {
                 }
                 else
                 {
+
+                    /**
+                     *
+                     * 如果没有重复 则进行注册
+                     */
                     int type = 0 ;
                     if(user_type.equals("成人"))
                     {
@@ -165,6 +217,15 @@ public class UserManagerController {
         return new RespBean(405,"注册失败");
 
     }
+
+    /**
+     *
+     * 查询用户信息的接口
+     *
+     * 对应前端的getUserInfo请求
+     * @param token
+     * @return
+     */
     @RequestMapping(value ="/userinfo",method = RequestMethod.GET)
     public UserInfoReturnData getUserInfo(@RequestParam String token) {
 
@@ -195,6 +256,16 @@ public class UserManagerController {
         return new UserInfoReturnData(1,new UserInfo(data[0],data[1],data[2],data[3],data[4],data[5],data[6]));
     }
 
+
+    /**
+     *
+     * 修改个人信息的接口
+     *
+     * 对应前端的changeUserInfo请求
+     * @param request
+     * @param bindingResult
+     * @return
+     */
     @RequestMapping(value ="/changeuserinfo",method = RequestMethod.POST)
     public RespBean ChangeUserInfo(@Valid @RequestBody Map<String,Object> request, BindingResult bindingResult) {
 
@@ -247,6 +318,15 @@ public class UserManagerController {
 
 
     }
+
+    /**
+     *
+     * 修改密码的接口
+     * 对应前端的 changePassword请求
+     * @param request
+     * @param bindingResult
+     * @return
+     */
     @RequestMapping(value ="/changepassword",method = RequestMethod.POST)
     public RespBean ChangePassword(@Valid @RequestBody Map<String,Object> request, BindingResult bindingResult) {
 

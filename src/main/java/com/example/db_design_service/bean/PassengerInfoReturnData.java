@@ -2,6 +2,11 @@ package com.example.db_design_service.bean;
 
 import java.util.List;
 
+/**
+ *
+ *Spring boot的注解会自动将类格式化为json  作为给前端的返回
+ * 作为查询乘客信息的返回 类
+ */
 public class PassengerInfoReturnData {
     private int status;
     private List<PassengerInfo> passengerInfos;

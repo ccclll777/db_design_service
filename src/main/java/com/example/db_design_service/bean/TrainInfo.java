@@ -1,5 +1,13 @@
 package com.example.db_design_service.bean;
 
+
+/**
+ *
+ *
+ * 列车信息类
+ * 与数据库的train_info表相对应
+ *
+ */
 public class TrainInfo {
     private String train_no;
     private String train_number;
