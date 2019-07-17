@@ -29,4 +29,9 @@ public class TrainParkingStationService {
     {
            return trainParkingStationDao.findTrainParkingInfo(train_number);
     }
+
+    public  String searchStation_name(String train_no,String station_no)
+    {
+        return trainParkingStationDao.SearchStation_name(train_no,station_no);
+    }
 }

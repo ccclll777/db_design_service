@@ -53,8 +53,6 @@ public class TrainTicketQueryController {
         java.text.SimpleDateFormat sdfs =
                 new java.text.SimpleDateFormat("yyyy-MM-dd");
         String currentTime = sdfs.format(dt);
-        logger.info(currentTime);
-        logger.info(datetime);
         if(datetime.compareTo(currentTime)<0)
         {
             return new TrainTicketPriceQueryReturnData(406,null);
@@ -194,8 +192,11 @@ public class TrainTicketQueryController {
             return new TrainSeatQueryReturnData(404,null,null);
         }
         List<TrainSeatQuery> trainSeatQuerieList = trainTickerQueryService.queryTrainSeat(train_no,start_no,end_no,datetime);
+
         List<TrainSeatCount> trainSeatCountList  = trainTickerQueryService.querySeatCount(train_no);
+
         List<TrainRemainingSeats_GD> trainRemainingSeats_gds =  new ArrayList<>();
+
         List<TrainRemainingSeats> trainRemainingSeatsList =  new ArrayList<>();
             if(train_number.substring(0,1).equals("G") || train_number.substring(0,1).equals("D"))
             {

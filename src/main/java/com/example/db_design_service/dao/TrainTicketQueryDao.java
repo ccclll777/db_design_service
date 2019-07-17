@@ -94,7 +94,7 @@ public interface TrainTicketQueryDao {
 
     /**
      *
-     * 根据列车编号  车厢号 查询 车厢中座位数
+     * 根据列车编号   查询 车厢中座位数
      *
      * 以及座位类型
      * @param train_no
@@ -102,4 +102,42 @@ public interface TrainTicketQueryDao {
      */
     @Select("select carriage_no ,seat_type,seat_count from seat where train_no = #{train_no} ")
     List<TrainSeatCount> QuerySeatCount (@Param("train_no")String train_no);
+
+
+    /**
+     *
+     * 根据列车编号  车厢号 查询座位总数
+     * @param train_no
+     * @param carriage_no
+     * @return
+     */
+    @Select("select carriage_no ,seat_type,seat_count from seat where train_no = #{train_no} and carriage_no = #{carriage_no} ")
+    List<TrainSeatCount> QueryCarriageSeatCount (@Param("train_no")String train_no,@Param("carriage_no") String carriage_no);
+
+
+    /**
+     * 根据 列车编号  车厢号 始发站 终点站 时间
+     *
+     * 查询 被预定的座位
+     *
+     * @param train_no
+     * @param carriage_no
+     * @param start_no
+     * @param end_no
+     * @param datetime
+     * @return
+     */
+    @Select("  select train_no, carriage_no , seat_no from order_list" +
+            "                            where    start_station_no < #{start_no} and end_station_no > #{start_no} " +
+            "                               and train_no = #{train_no} and train_start_date = #{datetime} and carriage_no = #{carriage_no}" +
+            "                                     union select train_no,carriage_no , seat_no from order_list " +
+            "                                    where  start_station_no < #{end_no} and end_station_no > #{end_no}  " +
+            "                                    and train_no = #{train_no} and train_start_date = #{datetime} and carriage_no = #{carriage_no}" +
+            "                                    union select train_no,carriage_no , seat_no from order_list " +
+            "                               where start_station_no > #{start_no} and  end_station_no < #{end_no} " +
+            "                                 and train_no = #{train_no} and train_start_date = #{datetime} and carriage_no = #{carriage_no}" +
+            " union select train_no,carriage_no , seat_no from order_list " +
+            "                                       where start_station_no = #{start_no} and  end_station_no = #{end_no} " +
+            "                                            and train_no = #{train_no} and train_start_date = #{datetime}  and carriage_no = #{carriage_no} ")
+    List<TrainSeatQuery> QueryCarriageSeatQuery (@Param("train_no")String train_no ,@Param("carriage_no") String carriage_no ,@Param("start_no") String start_no ,@Param("end_no") String end_no ,@Param("datetime") String datetime);
 }

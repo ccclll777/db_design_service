@@ -46,7 +46,7 @@ public class PassengerManagerController {
         String data [] = user.split(",");
         String user_phone_number = data[1];
         List<PassengerInfo> passengerInfoList = passengerService.selectPassenger(user_phone_number);
-
+        logger.info(String.valueOf(passengerInfoList.size()));
         return new PassengerInfoReturnData(1,passengerInfoList);
 
 

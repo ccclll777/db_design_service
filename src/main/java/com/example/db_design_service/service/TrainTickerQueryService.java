@@ -66,4 +66,15 @@ public class TrainTickerQueryService {
         return trainTicketQueryDao.QuerySeatCount(train_no);
     }
 
+    public List<TrainSeatQuery> queryCarriageSeatQuery(String train_no, String carriage_no,String start_no,String end_no,String datetime)
+    {
+        return trainTicketQueryDao.QueryCarriageSeatQuery(train_no,carriage_no,start_no,end_no,datetime);
+    }
+
+
+    public List<TrainSeatCount> queryCarriageSeatCount(String train_no, String carriage_no)
+    {
+        return trainTicketQueryDao.QueryCarriageSeatCount(train_no,carriage_no);
+    }
+
 }

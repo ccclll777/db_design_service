@@ -24,4 +24,8 @@ public interface TrainParkingStationDao {
      */
     @Select("select  DISTINCT b.station_no,b.station_name,  b.train_number, b.start_time, b.arrive_time, b.running_time,b.arrive_day_str from train_parking_station as a ,train_parking_station as b where a.train_number = #{train_number} and a.train_no = b.train_no order by b.station_no ")
      List<TrainParkingInfo> findTrainParkingInfo(@Param("train_number") String train_number);
+
+
+    @Select("select station_name from train_parking_station where train_no = #{train_no} and station_no = #{station_no}")
+    String SearchStation_name(@Param("train_no") String train_no, @Param("station_no") String station_no);
 }

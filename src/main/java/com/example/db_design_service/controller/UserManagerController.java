@@ -228,9 +228,6 @@ public class UserManagerController {
      */
     @RequestMapping(value ="/userinfo",method = RequestMethod.GET)
     public UserInfoReturnData getUserInfo(@RequestParam String token) {
-
-        logger.info("2141242141");
-        logger.info(redisUtils.get(token));
         String user = redisUtils.get(token);
         String data [] = user.split(",");
         if(data[3].equals("2"))
