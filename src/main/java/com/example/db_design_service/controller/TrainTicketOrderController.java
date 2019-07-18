@@ -6,6 +6,8 @@ import com.example.db_design_service.bean.*;
 import com.example.db_design_service.service.TrainParkingStationService;
 import com.example.db_design_service.service.TrainTickerQueryService;
 import com.example.db_design_service.service.TrainTicketOrderService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.BindingResult;
@@ -359,6 +361,15 @@ public class TrainTicketOrderController {
     }
 
 
+    /**
+     * 获得 本次订单 订单号
+     * @param token
+     * @param datetime
+     * @param train_no
+     * @param start_no
+     * @param end_no
+     * @return
+     */
     @RequestMapping(value ="/getOrderList",method = RequestMethod.GET)
     public GetOrderListReturnData GetUserInfo(@RequestParam String token,String datetime,String train_no,String start_no,String end_no) {
 
@@ -373,10 +384,33 @@ public class TrainTicketOrderController {
 
     }
 
+    /**
+     *
+     *
+     * 支付成功  获取订单信息
+     * @param request
+     * @param bindingResult
+     * @return
+     */
+    @RequestMapping(value ="/paySuccess",method = RequestMethod.POST)
+    public RespBean PaySuccess(@Valid @RequestBody Map<String,Object> request, BindingResult bindingResult) {
 
-    @RequestMapping(value ="/paySuccess",method = RequestMethod.GET)
-    public void PaySuccess(@RequestParam String token,String datetime,String train_no,String start_no,String end_no) {
+        if (bindingResult.hasErrors()) {
+            System.out.println(bindingResult.getFieldError().getDefaultMessage());
+        }
+        String token = (String) request.get("token");
+        String datetime = (String) request.get("datetime");
+        String train_no  =(String) request.get("train_no");
+        String start_no = (String) request.get("start_no");
+        String end_no = (String) request.get("end_no");
+        String order_id_list = (String)request.get("order_list");
+        order_id_list = order_id_list.substring(0,order_id_list.length()-1);
+        String [] order_list = order_id_list.split(",");
 
-    
+        for(int i = 0 ; i<order_list.length ; i++)
+        {
+            trainTicketOrderService.UpdateOrderPaySuccess(order_list[i]);
+        }
+        return new RespBean(1,"支付成功");
     }
 }

@@ -1,6 +1,7 @@
 package com.example.db_design_service.service;
 
 import com.example.db_design_service.bean.TrainScheduleInfo;
+import com.example.db_design_service.bean.TrainTransferSchedule;
 import com.example.db_design_service.dao.TrainScheduleDao;
 import org.springframework.stereotype.Service;
 
@@ -41,5 +42,10 @@ public class TrainScheduleService {
     public List<TrainScheduleInfo> searchTrainScheduleInfoList(String train_no, String start_no,String end_no)
     {
         return trainScheduleDao.searchTrainScheduleList(train_no,start_no,end_no);
+    }
+
+    public List<TrainTransferSchedule> searchTransferSchedule(String start_station,String end_station)
+    {
+            return trainScheduleDao.searchTransferSchedule(start_station,end_station);
     }
 }

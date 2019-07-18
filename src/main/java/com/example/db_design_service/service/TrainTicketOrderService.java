@@ -22,4 +22,9 @@ public class TrainTicketOrderService {
     {
         return trainTicketOrderDao.GetOrderList(user_phone_number,datetime,train_no,start_no,end_no);
     }
+
+    public void UpdateOrderPaySuccess(String order_id)
+    {
+        trainTicketOrderDao.UpdateOrderPaySuccess(order_id);
+    }
 }

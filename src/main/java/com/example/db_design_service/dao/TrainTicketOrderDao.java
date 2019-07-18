@@ -36,4 +36,8 @@ public interface TrainTicketOrderDao {
                                     @Param("train_no") String train_no, @Param("start_no") String start_no, @Param("end_no") String end_no);
 
 
+    @Update("update order_list set order_status  = '未出行' where order_id = #{order_id}")
+    void UpdateOrderPaySuccess(@Param("order_id") String order_id );
+
+
 }

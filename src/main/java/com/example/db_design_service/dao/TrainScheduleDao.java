@@ -1,6 +1,7 @@
 package com.example.db_design_service.dao;
 
 import com.example.db_design_service.bean.TrainScheduleInfo;
+import com.example.db_design_service.bean.TrainTransferSchedule;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -61,7 +62,34 @@ public interface TrainScheduleDao {
             "    and  B.station_no between #{start_no} and #{end_no} \n" +
             "    and A.train_no = #{train_no} \n" +
             "    and A.train_no = B.train_no \n" +
-            "    and B.station_no = A.station_no +1 ")
+            "    and B.station_no = A.station_no +1 order by A.station_no ,B.station_no ")
     List<TrainScheduleInfo>  searchTrainScheduleList(@Param("train_no") String train_no,@Param("start_no") String start_no , @Param("end_no") String end_no);
+
+
+    /**
+     *
+     * 根据 始发站 和终点站 查询换乘的车辆
+     * @param start_station
+     * @param end_station
+     * @return
+     */
+
+    @Select("select A.train_no as train_no_1 ,A.train_number as train_number_1, D.train_no as train_no_2 , " +
+            "D.train_number as train_number_2, A.station_no as start_station_no,A.station_name as start_station_name," +
+            "B.station_no as transfer_station_no , B.station_name as transfer_station_name ,A.start_time as start_time_1," +
+            "B.arrive_time as arrive_time_1 , C.start_time as start_time_2 ,D.arrive_time as arrive_time_2," +
+            "D.station_no as end_station_no, D.station_name as end_station_name, A.running_time as start_running_time_1," +
+            "B.running_time as end_running_time_1 ,C.running_time as start_running_time_2, D.running_time as end_running_time_2 " +
+            "from  train_parking_station as A , train_parking_station as B , train_parking_station as C ,train_parking_station as D " +
+            "where A.station_name = #{start_station} and D.station_name = #{end_station} and " +
+            "A.train_no = B.train_no and B.station_name = C.station_name " +
+            "and C.train_no = D.train_no and B.train_no <> C.train_no   and " +
+            "B.arrive_time < C.arrive_time and A.train_no in (select X.train_no from " +
+            "train_parking_station as X ,train_parking_station as Y " +
+            "where  X.train_no = Y.train_no and" +
+            " X.station_name = #{start_station} and Y.station_name = B.station_name and X.station_no < Y.station_no) " +
+            " and C.train_no in (select X.train_no from train_parking_station as X ,train_parking_station as Y " +
+            " where  X.train_no = Y.train_no and X.station_name = C.station_name and Y.station_name =  #{end_station} and X.station_no < Y.station_no) ")
+    List<TrainTransferSchedule> searchTransferSchedule(@Param("start_station") String start_station , @Param("end_station") String end_station);
 
 }

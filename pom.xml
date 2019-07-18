@@ -89,6 +89,10 @@
             <version>5.1.8.RELEASE</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
