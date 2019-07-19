@@ -76,7 +76,7 @@ public interface TrainScheduleDao {
 
     @Select("select A.train_no as train_no_1 ,A.train_number as train_number_1, D.train_no as train_no_2 , " +
             "D.train_number as train_number_2, A.station_no as start_station_no,A.station_name as start_station_name," +
-            "B.station_no as transfer_station_no , B.station_name as transfer_station_name ,A.start_time as start_time_1," +
+            "B.station_no as transfer_station_no_1 , B.station_name as transfer_station_name ,C.station_no as transfer_station_no_2,A.start_time as start_time_1," +
             "B.arrive_time as arrive_time_1 , C.start_time as start_time_2 ,D.arrive_time as arrive_time_2," +
             "D.station_no as end_station_no, D.station_name as end_station_name, A.running_time as start_running_time_1," +
             "B.running_time as end_running_time_1 ,C.running_time as start_running_time_2, D.running_time as end_running_time_2 " +

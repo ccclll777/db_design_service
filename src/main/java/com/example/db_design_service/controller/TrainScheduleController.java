@@ -113,7 +113,7 @@ public class TrainScheduleController {
             return new TrainTransferScheduleReturnData(1,trainTransferScheduleList);
     }
 
-    private int getMin(String time)
+    public int getMin(String time)
     {
         String [] time2 = time.split(":");
         int Hour = Integer.parseInt(time2[0]);
