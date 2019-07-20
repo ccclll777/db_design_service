@@ -193,7 +193,10 @@ public class TrainTicketQueryController {
             return new TrainSeatQueryReturnData(404,null,null);
         }
         List<TrainSeatQuery> trainSeatQuerieList = trainTickerQueryService.queryTrainSeat(train_no,start_no,end_no,datetime);
-
+        for (TrainSeatQuery trainSeatQuery: trainSeatQuerieList)
+        {
+            logger.info(trainSeatQuery.getCarriage_no() + "   " + trainSeatQuery.getSeat_no());
+        }
         List<TrainSeatCount> trainSeatCountList  = trainTickerQueryService.querySeatCount(train_no);
 
         List<TrainRemainingSeats_GD> trainRemainingSeats_gds =  new ArrayList<>();
@@ -553,4 +556,5 @@ public class TrainTicketQueryController {
         }
             return  new TrainTransferSeatCountReturnData(1,trainTransferSeatCountList);
     }
+
     }

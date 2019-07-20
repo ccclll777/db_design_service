@@ -68,8 +68,7 @@ public class TrainTicketOrderController {
         String data [] = user.split(",");
 
         String user_phone_number = data[1];
-        logger.info("user_phone_number");
-        logger.info(user_phone_number);
+
         String start_station_name = trainParkingStationService.searchStation_name(train_no,start_no);
         String end_station_name = trainParkingStationService.searchStation_name(train_no,end_no);
 
@@ -255,32 +254,28 @@ public class TrainTicketOrderController {
     private int getSeat_no_count(int Seat_count,int start,int interval,List<TrainSeatQuery> trainCarriageSeatCountList)
     {
         int seat_no = 0;
-        boolean flag = false;
         for(int i = start ; i< Seat_count ; i = i+interval)
         {
-            for(TrainSeatQuery trainSeatQuery :trainCarriageSeatCountList)
-            {
+               if( equals(trainCarriageSeatCountList,i))
+               {
+                    seat_no = i;
+                    break;
+               }
 
-                int temp = Integer.parseInt(trainSeatQuery.getSeat_no());
-                logger.info(String.valueOf(i) +"    "+ String.valueOf(temp) );
-                if(temp%interval == start)
-                {
-                    if(temp != i)
-                    {
-                        seat_no = i;
-                        flag =true;
-                        break;
-                    }
-                }
-            }
-            if(flag)
-            {
-                break;
-            }
         }
         return seat_no;
     }
+    public boolean equals(List<TrainSeatQuery> trainCarriageSeatCountList , int i) {
 
+        for(TrainSeatQuery trainSeatQuery:trainCarriageSeatCountList)
+        {
+            if(Integer.parseInt(trainSeatQuery.getSeat_no()) == i)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
     /**
      *
      *
@@ -384,6 +379,8 @@ public class TrainTicketOrderController {
 
     }
 
+
+
     /**
      *
      *
@@ -399,10 +396,10 @@ public class TrainTicketOrderController {
             System.out.println(bindingResult.getFieldError().getDefaultMessage());
         }
         String token = (String) request.get("token");
-        String datetime = (String) request.get("datetime");
-        String train_no  =(String) request.get("train_no");
-        String start_no = (String) request.get("start_no");
-        String end_no = (String) request.get("end_no");
+//        String datetime = (String) request.get("datetime");
+//        String train_no  =(String) request.get("train_no");
+//        String start_no = (String) request.get("start_no");
+//        String end_no = (String) request.get("end_no");
         String order_id_list = (String)request.get("order_list");
         order_id_list = order_id_list.substring(0,order_id_list.length()-1);
         String [] order_list = order_id_list.split(",");

@@ -4,7 +4,7 @@ package com.example.db_design_service.bean;
 /**
  * 订单信息
  *
- * 对应这订单表
+ * 对应订单表
  */
 public class OrderList {
 
