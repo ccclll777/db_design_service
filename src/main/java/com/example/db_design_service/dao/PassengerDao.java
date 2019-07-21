@@ -50,4 +50,10 @@ public interface PassengerDao {
 
     @Delete("delete from passenger where user_phone_number = #{ user_phone_number} and passenger_phone_number = #{passenger_phone_number} ")
     void deletePassenger(@Param("user_phone_number") String user_phone_number,@Param("passenger_phone_number") String passenger_phone_number);
+
+
+    @Select("select * from passenger where passenger_phone_number = #{passenger_phone_number} ")
+    List<PassengerInfo> searchPassenger(@Param("passenger_phone_number") String passenger_phone_number);
+
+
 }

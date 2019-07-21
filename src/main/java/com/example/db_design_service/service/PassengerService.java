@@ -56,4 +56,9 @@ public class PassengerService {
     {
         passengerDao.deletePassenger(user_phone_number,passenger_phone_number);
     }
+
+    public List<PassengerInfo> selectPassengerBynumber(String passenger_phone_number)
+    {
+        return passengerDao.searchPassenger(passenger_phone_number);
+    }
 }

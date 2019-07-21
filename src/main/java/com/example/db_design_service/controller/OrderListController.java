@@ -3,17 +3,18 @@ package com.example.db_design_service.controller;
 import com.example.db_design_service.RedisUtils;
 import com.example.db_design_service.bean.GetAllOrderList;
 import com.example.db_design_service.bean.GetAllOrderListReturnData;
+import com.example.db_design_service.bean.RespBean;
 import com.example.db_design_service.service.OrderListService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/order")
@@ -218,5 +219,29 @@ public class OrderListController {
         return new GetAllOrderListReturnData(1,getNoPayOrderListLists);
 
     }
+    @RequestMapping(value ="/refundTicket",method = RequestMethod.GET)
+    public RespBean RefundTicket(@RequestParam String token, String order_id) {
+        String user = redisUtils.get(token);
+        String data [] = user.split(",");
+        String user_phone_number = data[1];
+        orderListService.RefundTicket(user_phone_number,order_id);
+      return new RespBean(1,"退票成功，购票金额自动退回账户");
+    }
 
+    @RequestMapping(value ="/ticketChange",method = RequestMethod.POST)
+    public RespBean TicketChange(@Valid @RequestBody Map<String,Object> request, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            System.out.println(bindingResult.getFieldError().getDefaultMessage());
+        }
+        String token = (String) request.get("token");
+        String datetime = (String) request.get("datetime");
+        String order_id = (String)request.get("order_id");
+        String passenger_phone_number  =  (String)request.get("passenger_phone_number");
+
+        orderListService.ChangeTicket(passenger_phone_number,order_id);
+       return new RespBean(1,"改签成功");
+
+
+    }
 }

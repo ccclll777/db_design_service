@@ -64,4 +64,12 @@ public interface OrderListDao {
             " order by A.order_create_time")
     List<GetAllOrderList> GetNopayOrderList(@Param("user_phone_number") String user_phone_number);
 
+
+    @Update("update  order_list set order_status = '已退票' where order_id = #{order_id} and user_phone_number = #{user_phone_number}")
+    void RefundTicket (@Param("user_phone_number") String user_phone_number ,@Param("order_id") String order_id);
+
+
+    @Update("update  order_list set order_status = '已改签' where order_id = #{order_id} and passenger_phone_number = #{passenger_phone_number}")
+    void ChangeTicket (@Param("passenger_phone_number") String passenger_phone_number ,@Param("order_id") String order_id);
+
 }

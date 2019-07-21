@@ -112,8 +112,6 @@ public class PassengerManagerController {
     @RequestMapping(value ="/deletePassengerInfo",method = RequestMethod.GET)
     public RespBean DeletePassengerInfo(@RequestParam String token,String passenger_phone_number) {
 
-        logger.info(redisUtils.get(token));
-        logger.info(passenger_phone_number);
         String user = redisUtils.get(token);
         String data [] = user.split(",");
         String user_phone_number = data[1];
@@ -128,6 +126,15 @@ public class PassengerManagerController {
 
         
 
+    }
+
+    @RequestMapping(value ="/getPassengerInfoByNumber",method = RequestMethod.GET)
+    public PassengerInfoReturnData searchPassengerByNumber(@RequestParam String passenger_phone_number) {
+
+
+            logger.info(passenger_phone_number);
+            List<PassengerInfo> passengerInfoList = passengerService.selectPassengerBynumber(passenger_phone_number);
+            return new PassengerInfoReturnData(1,passengerInfoList);
     }
 
 }

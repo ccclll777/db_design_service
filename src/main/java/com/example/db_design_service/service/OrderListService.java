@@ -31,4 +31,16 @@ public class OrderListService {
         return orderListDao.GetNopayOrderList(user_phone_number);
     }
 
+    public void RefundTicket(String user_phone_number ,String order_id)
+    {
+        orderListDao.RefundTicket(user_phone_number,order_id);
+    }
+
+    public  void ChangeTicket(String passenger_phone_number,String order_id)
+    {
+        orderListDao.ChangeTicket(passenger_phone_number,order_id);
+    }
+
+
+
 }
