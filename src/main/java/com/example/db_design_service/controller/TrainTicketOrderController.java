@@ -366,7 +366,7 @@ public class TrainTicketOrderController {
      * @return
      */
     @RequestMapping(value ="/getOrderList",method = RequestMethod.GET)
-    public GetOrderListReturnData GetUserInfo(@RequestParam String token,String datetime,String train_no,String start_no,String end_no) {
+    public GetOrderListReturnData GetOrderList(@RequestParam String token,String datetime,String train_no,String start_no,String end_no) {
 
         String user = redisUtils.get(token);
 

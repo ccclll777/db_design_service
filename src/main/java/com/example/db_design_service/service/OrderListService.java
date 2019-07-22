@@ -1,6 +1,7 @@
 package com.example.db_design_service.service;
 
 import com.example.db_design_service.bean.GetAllOrderList;
+import com.example.db_design_service.bean.GetOrderList;
 import com.example.db_design_service.dao.OrderListDao;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +42,20 @@ public class OrderListService {
         orderListDao.ChangeTicket(passenger_phone_number,order_id);
     }
 
+
+    public List<GetOrderList> getOrderInof(String order_id)
+    {
+        return orderListDao.GetOrderInfo(order_id);
+    }
+
+    public List<GetOrderList> GetOrderChagngeList(String user_phone_number, String datetime, String train_no,  String start_no,  String end_no,String passenger_phone_number)
+    {
+        return orderListDao.GetOrderChagngeList(user_phone_number,datetime,train_no,start_no,end_no,passenger_phone_number);
+    }
+    public String getOrderMoney(String order_id)
+    {
+        return orderListDao.GetOrderMoney(order_id);
+    }
 
 
 }

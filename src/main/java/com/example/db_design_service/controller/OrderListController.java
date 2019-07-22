@@ -1,9 +1,7 @@
 package com.example.db_design_service.controller;
 
 import com.example.db_design_service.RedisUtils;
-import com.example.db_design_service.bean.GetAllOrderList;
-import com.example.db_design_service.bean.GetAllOrderListReturnData;
-import com.example.db_design_service.bean.RespBean;
+import com.example.db_design_service.bean.*;
 import com.example.db_design_service.service.OrderListService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -243,5 +241,50 @@ public class OrderListController {
        return new RespBean(1,"改签成功");
 
 
+    }
+
+    @RequestMapping(value ="/getOrder",method = RequestMethod.POST)
+    public GetOrderListReturnData getOrderInfo(@Valid @RequestBody Map<String,Object> request, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            System.out.println(bindingResult.getFieldError().getDefaultMessage());
+        }
+
+        String order_id = (String)request.get("order_id");
+       List<GetOrderList> getOrderLists = orderListService.getOrderInof(order_id);
+       for(GetOrderList getOrderList:getOrderLists)
+       {
+           getOrderList.setSeat_no(GetResult_Seat_no(getOrderList.getSeat_type(), Integer.parseInt(getOrderList.getSeat_no())));
+       }
+
+        return new GetOrderListReturnData(1,getOrderLists);
+    }
+
+
+    @RequestMapping(value ="/getOrderChangeResult",method = RequestMethod.GET)
+    public GetOrderListReturnData getOrderChangeResult(@RequestParam String token,String datetime,String train_no,String start_no,String end_no ,String passenger_phone_number)  {
+
+        String user = redisUtils.get(token);
+
+        String data [] = user.split(",");
+
+        String user_phone_number = data[1];
+        List<GetOrderList> getOrderLists =   orderListService.GetOrderChagngeList(user_phone_number,datetime,train_no,start_no,end_no,passenger_phone_number);
+        for(GetOrderList getOrderList:getOrderLists)
+        {
+            getOrderList.setSeat_no(GetResult_Seat_no(getOrderList.getSeat_type(), Integer.parseInt(getOrderList.getSeat_no())));
+        }
+
+        return new GetOrderListReturnData(1,getOrderLists);
+
+    }
+
+
+    @RequestMapping(value ="/getOrderMoney",method = RequestMethod.GET)
+    public RespBean getOrderChangeResult(@RequestParam String order_id)  {
+
+    String order_money = orderListService.getOrderMoney(order_id);
+
+    return new RespBean(1,order_money);
     }
 }

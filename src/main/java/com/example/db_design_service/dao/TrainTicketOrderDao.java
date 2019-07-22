@@ -40,4 +40,7 @@ public interface TrainTicketOrderDao {
     void UpdateOrderPaySuccess(@Param("order_id") String order_id );
 
 
+
+
+
 }
