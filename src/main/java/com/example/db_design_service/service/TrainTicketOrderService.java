@@ -28,5 +28,10 @@ public class TrainTicketOrderService {
         trainTicketOrderDao.UpdateOrderPaySuccess(order_id);
     }
 
+    public String SelectPassengerType(String user_phone_number,String passenger_phone_number)
+    {
+        return trainTicketOrderDao.SelectPassengerType(user_phone_number,passenger_phone_number);
+    }
+
 
 }

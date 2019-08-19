@@ -13,7 +13,11 @@ import java.util.List;
  */
 @Mapper
 public interface TrainTicketOrderDao {
-
+    /**
+     *
+     * 创建新订单
+     * @param orderList
+     */
 
 
     @Insert("insert into order_list (user_phone_number, passenger_phone_number, passenger_id_number, train_no, " +
@@ -26,6 +30,15 @@ public interface TrainTicketOrderDao {
             ",#{ orderList.order_status},#{ orderList.train_start_date})")
     void AddOrder(@Param("orderList") OrderList orderList);
 
+    /**
+     *根据用户电话号码  时间  车次  始发站 到达站 来查询用户本次的订单
+     * @param user_phone_number
+     * @param datetime
+     * @param train_no
+     * @param start_no
+     * @param end_no
+     * @return
+     */
     @Select("select A.order_id as order_id,B.passenger_real_name as passenger_real_name ," +
             "A.passenger_phone_number as passenger_phone_number,A.passenger_id_number as passenger_id_number," +
             "A.carriage_no  as carriage_no, C.seat_type as seat_type,A.seat_no as seat_no" +
@@ -36,8 +49,16 @@ public interface TrainTicketOrderDao {
                                     @Param("train_no") String train_no, @Param("start_no") String start_no, @Param("end_no") String end_no);
 
 
+    /**
+     * 更新订单信息 将未支付订单更新为未出行订单，表示用户支付成功
+     * @param order_id
+     */
     @Update("update order_list set order_status  = '未出行' where order_id = #{order_id}")
     void UpdateOrderPaySuccess(@Param("order_id") String order_id );
+
+
+    @Select("select passenger_type  from passenger where user_phone_number = #{user_phone_number} and passenger_phone_number = #{passenger_phone_number}")
+    String SelectPassengerType(@Param("user_phone_number") String user_phone_number , @Param("passenger_phone_number") String passenger_phone_number);
 
 
 
