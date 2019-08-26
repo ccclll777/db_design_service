@@ -1,8 +1,10 @@
 package com.example.db_design_service.service;
 
+import com.example.db_design_service.bean.AllOrder;
 import com.example.db_design_service.bean.GetOrderList;
 import com.example.db_design_service.bean.OrderList;
 import com.example.db_design_service.dao.TrainTicketOrderDao;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -34,4 +36,13 @@ public class TrainTicketOrderService {
     }
 
 
+    public List<OrderList> getOrderListByStartTime(String user_phone_number,String passenger_phone_number ,String train_start_date)
+    {
+        return trainTicketOrderDao.getOrderListByStartTime(user_phone_number,passenger_phone_number,train_start_date);
+    }
+
+    public List<AllOrder> getAllOrder()
+    {
+        return trainTicketOrderDao.getAllOrder();
+    }
 }

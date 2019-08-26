@@ -94,4 +94,11 @@ public class UserService {
     {
         userDao.UptatePassword(user_password,user_phone_number);
     }
+
+
+    public void deleteUser(String user_phone_number)
+    {
+        userDao.deleteUser(user_phone_number);
+    }
+
 }

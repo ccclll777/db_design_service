@@ -5,9 +5,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 
-@SpringBootApplication
-@MapperScan("org.sang.mapper")
-@EnableCaching
 
 /**
  * spring boot 启动类
@@ -15,7 +12,9 @@ import org.springframework.cache.annotation.EnableCaching;
  *
  *
  */
-
+@SpringBootApplication
+@MapperScan("org.sang.mapper")
+@EnableCaching
 public class DbDesignServiceApplication {
 
     public static void main(String[] args) {

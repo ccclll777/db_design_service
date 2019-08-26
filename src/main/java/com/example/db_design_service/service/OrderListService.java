@@ -58,4 +58,8 @@ public class OrderListService {
     }
 
 
+    public List<GetAllOrderList> GetAllOrder()
+    {
+        return orderListDao.GetAllOrder();
+    }
 }

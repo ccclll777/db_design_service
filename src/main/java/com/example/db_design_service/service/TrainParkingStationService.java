@@ -34,4 +34,8 @@ public class TrainParkingStationService {
     {
         return trainParkingStationDao.SearchStation_name(train_no,station_no);
     }
+    public  List<String> selectAllStationName()
+    {
+        return trainParkingStationDao.selectAllStationName();
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.db_design_service.service;
 
+import com.example.db_design_service.bean.SeatInfo;
 import com.example.db_design_service.bean.TrainInfo;
 import com.example.db_design_service.dao.TrainInfoDao;
 import org.springframework.stereotype.Service;
@@ -51,4 +52,30 @@ public class TrainInfoService {
         return trainInfoDao.findTrainInfo(train_number);
     }
 
+    public void updateTrainTypeStop(String train_no)
+    {
+        trainInfoDao.updateTrainTypeStop(train_no);
+    }
+    public void updateTrainTypeStart(String train_no)
+    {
+        trainInfoDao.updateTrainTypeStart(train_no);
+    }
+
+    public  List<SeatInfo> SelectSeatInfoByTrainNumber(String train_number)
+    {
+        return trainInfoDao.SelectSeatInfoByTrainNumber(train_number);
+    }
+    public void deleteTrainSeat(String train_no,String carriage_no)
+    {
+        trainInfoDao.deleteTrainSeat(train_no,carriage_no);
+    }
+    public void addTrainSeat(SeatInfo seatInfo)
+    {
+        trainInfoDao.addTrainSeat(seatInfo);
+    }
+
+    public  List<String> selectAllTrainNumber()
+    {
+        return trainInfoDao.selectAllTrainNumber();
+    }
 }

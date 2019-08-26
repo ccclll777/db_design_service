@@ -61,4 +61,10 @@ public class PassengerService {
     {
         return passengerDao.searchPassenger(passenger_phone_number);
     }
+
+
+    public List<PassengerInfo> searchAllPassenger()
+    {
+        return passengerDao.searchAllPassenger();
+    }
 }

@@ -28,4 +28,8 @@ public interface TrainParkingStationDao {
 
     @Select("select station_name from train_parking_station where train_no = #{train_no} and station_no = #{station_no}")
     String SearchStation_name(@Param("train_no") String train_no, @Param("station_no") String station_no);
+
+    @Select("select DISTINCT station_name from train_parking_station")
+    List<String> selectAllStationName();
+
 }

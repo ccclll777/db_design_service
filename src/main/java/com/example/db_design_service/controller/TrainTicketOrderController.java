@@ -6,13 +6,11 @@ import com.example.db_design_service.bean.*;
 import com.example.db_design_service.service.TrainParkingStationService;
 import com.example.db_design_service.service.TrainTickerQueryService;
 import com.example.db_design_service.service.TrainTicketOrderService;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import sun.jvm.hotspot.opto.HaltNode;
+
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -64,6 +62,7 @@ public class TrainTicketOrderController {
         String order_create_time = sdfs.format(dt);
 
 
+
         String user = redisUtils.get(token);
 
         String data [] = user.split(",");
@@ -73,6 +72,13 @@ public class TrainTicketOrderController {
         String start_station_name = trainParkingStationService.searchStation_name(train_no,start_no);
         String end_station_name = trainParkingStationService.searchStation_name(train_no,end_no);
 
+        List<OrderList> orderLists = trainTicketOrderService.getOrderListByStartTime(user_phone_number,passenger_phone_number,datetime);
+        if(orderLists.size() != 0)
+
+        {
+            logger.info("已经订购过本次列车");
+            return new TrainTicketOrderReturnData(40008,null,null,null,null);
+        }
         List<TrainSeatQuery> trainCarriageSeatCountList =trainTickerQueryService.queryCarriageSeatQuery(train_no,carriage_no,start_no,end_no,datetime);
         List<TrainSeatCount> trainSeatCountList  = trainTickerQueryService.queryCarriageSeatCount(train_no,carriage_no);
 
@@ -469,6 +475,7 @@ public class TrainTicketOrderController {
         }
         return new RespBean(1,"支付成功");
     }
+
 
 
 }

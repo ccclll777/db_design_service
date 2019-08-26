@@ -251,6 +251,7 @@ public class OrderListController {
         }
 
         String order_id = (String)request.get("order_id");
+
        List<GetOrderList> getOrderLists = orderListService.getOrderInof(order_id);
        for(GetOrderList getOrderList:getOrderLists)
        {
@@ -286,5 +287,29 @@ public class OrderListController {
     String order_money = orderListService.getOrderMoney(order_id);
 
     return new RespBean(1,order_money);
+    }
+
+    @RequestMapping(value ="/getAllOrder",method = RequestMethod.GET)
+    public GetAllOrderListReturnData GetOrderList(){
+
+        List<GetAllOrderList> getAllOrderListLists = orderListService.GetAllOrder();
+        for(GetAllOrderList getAllOrderList :getAllOrderListLists)
+        {
+            getAllOrderList.setSeat_no(GetResult_Seat_no(getAllOrderList.getSeat_type(), Integer.parseInt(getAllOrderList.getSeat_no())));
+        }
+
+        return new GetAllOrderListReturnData(1,getAllOrderListLists);
+    }
+
+    @RequestMapping(value ="/getOrderByPhoneNumber",method = RequestMethod.GET)
+    public GetAllOrderListReturnData getOrderByPhoneNumber(@RequestParam String user_phone_number){
+
+        List<GetAllOrderList> getAllOrderListLists = orderListService.getAllOrderLists(user_phone_number);
+        for(GetAllOrderList getAllOrderList :getAllOrderListLists)
+        {
+            getAllOrderList.setSeat_no(GetResult_Seat_no(getAllOrderList.getSeat_type(), Integer.parseInt(getAllOrderList.getSeat_no())));
+        }
+
+        return new GetAllOrderListReturnData(1,getAllOrderListLists);
     }
 }

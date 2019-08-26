@@ -79,4 +79,8 @@ public interface UserDao {
     @Update("update user set user_password = #{user_password} where user_phone_number = #{user_phone_number}")
     void UptatePassword(@Param("user_password") String user_password, @Param("user_phone_number") String user_phone_number);
 
+
+    @Delete("delete from user where user_phone_number = #{user_phone_number}")
+    void deleteUser(@Param("user_phone_number")String user_phone_number);
+
 }

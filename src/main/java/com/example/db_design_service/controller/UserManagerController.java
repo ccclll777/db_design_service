@@ -1,6 +1,7 @@
 package com.example.db_design_service.controller;
 
 import com.example.db_design_service.RedisUtils;
+import com.example.db_design_service.service.PassengerService;
 import com.example.db_design_service.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,11 @@ import java.util.Map;
 public class UserManagerController {
     @Resource
     private UserService userService;
+
+    @Resource
+    private PassengerService passengerService;
+
+
     @Resource
     private RedisUtils redisUtils;
     private static final Logger logger = LoggerFactory.getLogger(UserManagerController.class);
@@ -345,4 +351,117 @@ public class UserManagerController {
             }
         return new RespBean(405,"修改失败");
     }
+
+
+    /**
+     * 管理员登陆
+     * @param request
+     * @param bindingResult
+     * @return
+     */
+    @RequestMapping(value ="/adminLogin",method = RequestMethod.POST)
+    public RespBean AdminLogin(@Valid @RequestBody Map<String,Object> request, BindingResult bindingResult) {
+
+
+        if (bindingResult.hasErrors()) {
+            System.out.println(bindingResult.getFieldError().getDefaultMessage());
+        }
+        String username = (String) request.get("user_name");
+        String password = (String) request.get("password");
+
+        try
+        {
+            List<User> users = userService.selectAllUser();
+
+            for (User user : users) {
+                if (user.getUser_phone_number().equals(username)  && user.getUser_password().equals(password) && user.getUser_type() ==-1 )
+                {
+
+                    //token生成  用户信息redis缓存
+                    String token =user.getUser_real_name()+","+user.getUser_phone_number()+","+user.getUser_email()+","+user.getUser_type()+","+user.getUser_gender()
+                            +","+user.getUser_id_number()+","+user.getUser_address();
+
+                    /**
+                     * 将用户登陆信息存入token中
+                     */
+                    redisUtils.set(user.getUser_phone_number()+"msbfajshbadsmnfbasmfa"+user.getUser_password(),token);
+//                        redisUtils.get(token.getToken());
+
+                    return new RespBean(1,user.getUser_phone_number()+"msbfajshbadsmnfbasmfa"+user.getUser_password());
+
+                }
+            }
+
+        }
+        catch(Exception e)
+        {
+            logger.info("登录失败");
+            return new RespBean(404, "失败");
+        }
+        return new RespBean(404, "失败");
+    }
+
+
+    /**
+     * 获取所有用户
+     * @param token
+     * @return
+     */
+    @RequestMapping(value ="/getAllUser",method = RequestMethod.GET)
+    public GetAllUserReturnData getAllUser(@RequestParam String token) {
+        try {
+            String a = redisUtils.get(token);
+            if(a != null)
+            {
+                List<User> userList = userService.selectAllUser();
+                    return  new GetAllUserReturnData(1,userList);
+
+            }
+
+        }
+        catch (Exception e)
+        {
+            return  new GetAllUserReturnData(404,null);
+
+                  }
+        return  new GetAllUserReturnData(404,null);
+    }
+
+
+    @RequestMapping(value ="/getAllPassenger",method = RequestMethod.GET)
+    public PassengerInfoReturnData getAllPassenger(@RequestParam String token) {
+        try {
+            String a = redisUtils.get(token);
+            if(a != null)
+            {
+               List<PassengerInfo> passengerInfoList = passengerService.searchAllPassenger();
+                    return new PassengerInfoReturnData(1,passengerInfoList);
+            }
+
+        }
+        catch (Exception e)
+        {
+            return new PassengerInfoReturnData(404,null);
+        }
+        return new PassengerInfoReturnData(404,null);
+    }
+
+
+    @RequestMapping(value ="/deleteUser",method = RequestMethod.GET)
+    public RespBean deleteUser(@RequestParam String user_phone_number) {
+        try {
+
+                userService.deleteUser(user_phone_number);
+                return new RespBean(1,"删除成功");
+
+
+        }
+        catch (Exception e)
+        {
+            return new RespBean(404,"删除失败");
+        }
+
+    }
+
+
 }

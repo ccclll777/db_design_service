@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -91,6 +92,143 @@ public class TrainInfoSelectController {
         return new TrainParkingInfoReturnData(1,trainParkingInfos);
 
 
+    }
+
+       @RequestMapping(value ="/updateTrainTypeStart",method = RequestMethod.GET)
+    public RespBean updateTrainTypeStart(String train_no)
+    {
+
+        try
+        {
+            trainInfoService.updateTrainTypeStart(train_no);
+            return new RespBean(1,"修改成功");
+        }
+        catch (Exception e)
+        {
+            return new RespBean(404,"修改失败");
+        }
+    }
+
+    @RequestMapping(value ="/updateTrainTypeStop",method = RequestMethod.GET)
+    public RespBean updateTrainTypeStop(String train_no)
+    {
+
+        try
+        {
+            trainInfoService.updateTrainTypeStop(train_no);
+            return new RespBean(1,"修改成功");
+        }
+        catch (Exception e)
+        {
+            return new RespBean(404,"修改失败");
+        }
+    }
+
+    @RequestMapping(value ="/selectSeatInfoByTrainNumber",method = RequestMethod.GET)
+    public SeatInfoReturnData SelectSeatInfoByTrainNumber(String train_number)
+    {
+
+        try
+        {
+
+            return new SeatInfoReturnData(1, trainInfoService.SelectSeatInfoByTrainNumber(train_number));
+
+        }
+        catch (Exception e)
+        {
+
+            logger.info(e.getMessage());
+            return new SeatInfoReturnData(404,null);
+
+        }
+    }
+
+
+    @RequestMapping(value ="/deleteTrainSeat",method = RequestMethod.GET)
+    public RespBean deleteTrainSeat(String train_no,String carriage_no)
+    {
+        try
+        {
+
+            trainInfoService.deleteTrainSeat(train_no,carriage_no);
+            return new RespBean(1, "删除成功");
+
+        }
+        catch (Exception e)
+        {
+
+            logger.info(e.getMessage());
+            return new RespBean(404,"删除失败");
+
+        }
+
+    }
+    @RequestMapping(value ="/addTrainSeat",method = RequestMethod.GET)
+    public RespBean addTrainSeat(String train_no,String carriage_no,String seat_type,String seat_count)
+    {
+
+        try
+        {
+
+           SeatInfo seatInfo = new SeatInfo(train_no,null,carriage_no,seat_type,Integer.parseInt(seat_count));
+           trainInfoService.addTrainSeat(seatInfo);
+            return new RespBean(1, "添加成功");
+
+        }
+        catch (Exception e)
+        {
+
+            logger.info(e.getMessage());
+            return new RespBean(404,"添加失败");
+
+        }
+    }
+
+
+    @RequestMapping(value ="/getAllTrainNumber",method = RequestMethod.GET)
+    public GetAllTrainNumberListReturnData getAllTrainNumber()
+    {
+        try {
+
+            List<String> trainNumberLists = trainInfoService.selectAllTrainNumber();
+            List<TrainNumberData> trainNumberDatas = new ArrayList<>();
+            for(int i = 0 ; i<trainNumberLists.size() ; i++)
+            {
+
+                TrainNumberData trainNumberData = new TrainNumberData(trainNumberLists.get(i),"111");
+                trainNumberDatas.add(trainNumberData);
+            }
+            return new GetAllTrainNumberListReturnData(1,trainNumberDatas);
+        }
+       catch (Exception e)
+       {
+           logger.info(e.getMessage());
+           return new GetAllTrainNumberListReturnData(404,null);
+
+       }
+    }
+
+    @RequestMapping(value ="/getAllStationName",method = RequestMethod.GET)
+    public GetAllTrainNumberListReturnData getAllStationName()
+    {
+        try {
+
+            List<String> stationNameList = trainParkingStationService.selectAllStationName();
+                    List<TrainNumberData> trainNumberDatas = new ArrayList<>();
+            for(int i = 0 ; i<stationNameList.size() ; i++)
+            {
+
+                TrainNumberData trainNumberData = new TrainNumberData(stationNameList.get(i),"111");
+                trainNumberDatas.add(trainNumberData);
+            }
+            return new GetAllTrainNumberListReturnData(1,trainNumberDatas);
+        }
+        catch (Exception e)
+        {
+            logger.info(e.getMessage());
+            return new GetAllTrainNumberListReturnData(404,null);
+
+        }
     }
 
 }
