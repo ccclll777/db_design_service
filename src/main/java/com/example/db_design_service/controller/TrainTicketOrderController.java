@@ -3,6 +3,7 @@ package com.example.db_design_service.controller;
 
 import com.example.db_design_service.RedisUtils;
 import com.example.db_design_service.bean.*;
+import com.example.db_design_service.service.OrderListService;
 import com.example.db_design_service.service.TrainParkingStationService;
 import com.example.db_design_service.service.TrainTickerQueryService;
 import com.example.db_design_service.service.TrainTicketOrderService;
@@ -24,6 +25,10 @@ public class TrainTicketOrderController {
 
     @Resource
     private TrainTickerQueryService trainTickerQueryService;
+
+    @Resource
+    private OrderListService orderListService;
+
 
     @Resource
     private TrainTicketOrderService trainTicketOrderService;
@@ -58,11 +63,14 @@ public class TrainTicketOrderController {
 
         java.util.Date dt = new java.util.Date();
         java.text.SimpleDateFormat sdfs =
-                new java.text.SimpleDateFormat("yyyy-MM-dd");
+                new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String order_create_time = sdfs.format(dt);
 
 
+        String start_time_hour = trainTicketOrderService.getTrainStartTime(train_no,start_no);
+        datetime = datetime+" "+start_time_hour+":00";
 
+        String curtime = datetime;
         String user = redisUtils.get(token);
 
         String data [] = user.split(",");
@@ -72,6 +80,8 @@ public class TrainTicketOrderController {
         String start_station_name = trainParkingStationService.searchStation_name(train_no,start_no);
         String end_station_name = trainParkingStationService.searchStation_name(train_no,end_no);
 
+
+        //判断是否订购过本次列车
         List<OrderList> orderLists = trainTicketOrderService.getOrderListByStartTime(user_phone_number,passenger_phone_number,datetime);
         if(orderLists.size() != 0)
 
@@ -79,6 +89,37 @@ public class TrainTicketOrderController {
             logger.info("已经订购过本次列车");
             return new TrainTicketOrderReturnData(40008,null,null,null,null);
         }
+
+        String now_start_time = trainTicketOrderService.getTrainStartTime(train_no,start_no);
+        String now_end_time = trainTicketOrderService.getTrainStartTime(train_no,end_no);
+
+        //判断是否有冲突行程
+        List<AllOrder> passenger_all_orderList = orderListService.GetAllNoTripOrderByPassenger(passenger_phone_number);
+        for(AllOrder passenger_order:passenger_all_orderList)
+        {
+            logger.info("666666"+passenger_order.getTrain_start_date().substring(0,10));
+            logger.info("88888"+curtime.substring(0,10));
+            logger.info(String.valueOf(passenger_order.getTrain_start_date().substring(0,10).compareTo(curtime.substring(0,10)) ==0));
+            if(passenger_order.getTrain_start_date().substring(0,10).compareTo(curtime.substring(0,10)) ==0)
+            {
+                String old_start_time = trainTicketOrderService.getTrainStartTime(passenger_order.getTrain_no(),passenger_order.getStart_station_no());
+                String old_end_time = trainTicketOrderService.getTrainStartTime(passenger_order.getTrain_no(),passenger_order.getEnd_station_no());
+
+
+                if(old_start_time.compareTo(now_end_time) > 0 ||old_end_time.compareTo(now_start_time) <0 )
+                {
+                    logger.info(old_start_time+"   "+now_end_time);
+                    logger.info(old_end_time+"   "+now_start_time);
+                }else
+                {
+                    return new TrainTicketOrderReturnData(40009,null,null,null,null);
+
+                }
+            }
+
+
+        }
+
         List<TrainSeatQuery> trainCarriageSeatCountList =trainTickerQueryService.queryCarriageSeatQuery(train_no,carriage_no,start_no,end_no,datetime);
         List<TrainSeatCount> trainSeatCountList  = trainTickerQueryService.queryCarriageSeatCount(train_no,carriage_no);
 
@@ -87,6 +128,7 @@ public class TrainTicketOrderController {
         int result_seat_no = 0;
         String result_seat = null;
         OrderList orderList = null ;
+        //学生票价钱打折
         if(train_number.substring(0,1).equals("G") || train_number.substring(0,1).equals("D"))
         {
             result_seat_no = GetSeat_no_GD(Seat_type,Seat_count,seat_number,trainCarriageSeatCountList);
@@ -438,8 +480,8 @@ public class TrainTicketOrderController {
         String data [] = user.split(",");
 
         String user_phone_number = data[1];
-        List<GetOrderList> orderLists = trainTicketOrderService.getOrderList(user_phone_number,datetime,train_no,start_no,end_no);
-
+//        List<GetOrderList> orderLists = trainTicketOrderService.getOrderList(user_phone_number,datetime,train_no,start_no,end_no);
+        List<GetOrderList> orderLists = trainTicketOrderService.getOrderList(user_phone_number,train_no,start_no,end_no);
         return  new GetOrderListReturnData(1,orderLists);
 
     }
@@ -461,10 +503,7 @@ public class TrainTicketOrderController {
             System.out.println(bindingResult.getFieldError().getDefaultMessage());
         }
         String token = (String) request.get("token");
-//        String datetime = (String) request.get("datetime");
-//        String train_no  =(String) request.get("train_no");
-//        String start_no = (String) request.get("start_no");
-//        String end_no = (String) request.get("end_no");
+
         String order_id_list = (String)request.get("order_list");
         order_id_list = order_id_list.substring(0,order_id_list.length()-1);
         String [] order_list = order_id_list.split(",");

@@ -31,24 +31,24 @@ public interface TrainTicketOrderDao {
             ",#{ orderList.order_status},#{ orderList.train_start_date})")
     void AddOrder(@Param("orderList") OrderList orderList);
 
-    /**
-     *根据用户电话号码  时间  车次  始发站 到达站 来查询用户本次的订单
-     * @param user_phone_number
-     * @param datetime
-     * @param train_no
-     * @param start_no
-     * @param end_no
-     * @return
-     */
+
+//    @Select("select A.order_id as order_id,B.passenger_real_name as passenger_real_name ," +
+//            "A.passenger_phone_number as passenger_phone_number,A.passenger_id_number as passenger_id_number," +
+//            "A.carriage_no  as carriage_no, C.seat_type as seat_type,A.seat_no as seat_no" +
+//            " from order_list as A , passenger as B ,seat as C " +
+//            " where A.user_phone_number = #{user_phone_number} and A.train_start_date = #{datetime} and A.train_no = #{train_no} and A.start_station_no = #{start_no} " +
+//            " and A.end_station_no = #{end_no} and A.train_no = C.train_no and A.carriage_no = C.carriage_no and A.passenger_phone_number = B.passenger_phone_number and A.order_status = '未支付'")
+//    List<GetOrderList> GetOrderList(@Param("user_phone_number") String user_phone_number, @Param("datetime") String datetime,
+//                                    @Param("train_no") String train_no, @Param("start_no") String start_no, @Param("end_no") String end_no);
+
     @Select("select A.order_id as order_id,B.passenger_real_name as passenger_real_name ," +
             "A.passenger_phone_number as passenger_phone_number,A.passenger_id_number as passenger_id_number," +
             "A.carriage_no  as carriage_no, C.seat_type as seat_type,A.seat_no as seat_no" +
             " from order_list as A , passenger as B ,seat as C " +
-            " where A.user_phone_number = #{user_phone_number} and A.train_start_date = #{datetime} and A.train_no = #{train_no} and A.start_station_no = #{start_no} " +
+            " where A.user_phone_number = #{user_phone_number}  and A.train_no = #{train_no} and A.start_station_no = #{start_no} " +
             " and A.end_station_no = #{end_no} and A.train_no = C.train_no and A.carriage_no = C.carriage_no and A.passenger_phone_number = B.passenger_phone_number and A.order_status = '未支付'")
-    List<GetOrderList> GetOrderList(@Param("user_phone_number") String user_phone_number, @Param("datetime") String datetime,
+    List<GetOrderList> GetOrderList(@Param("user_phone_number") String user_phone_number,
                                     @Param("train_no") String train_no, @Param("start_no") String start_no, @Param("end_no") String end_no);
-
 
     /**
      * 更新订单信息 将未支付订单更新为未出行订单，表示用户支付成功
@@ -70,4 +70,7 @@ public interface TrainTicketOrderDao {
     @Select("select * from order_list")
     List<AllOrder> getAllOrder();
 
+
+    @Select("select start_time from train_parking_station where train_no = #{train_no} and station_no = #{station_no}")
+    String getTrainStartTime(@Param("train_no")String train_no,@Param("station_no") String station_no);
 }

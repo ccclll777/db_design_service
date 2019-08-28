@@ -1,5 +1,7 @@
 package com.example.db_design_service.service;
 
+import com.example.db_design_service.bean.AllOrder;
+import com.example.db_design_service.bean.GetAllNoTripData;
 import com.example.db_design_service.bean.GetAllOrderList;
 import com.example.db_design_service.bean.GetOrderList;
 import com.example.db_design_service.dao.OrderListDao;
@@ -62,4 +64,28 @@ public class OrderListService {
     {
         return orderListDao.GetAllOrder();
     }
+
+    public   void UpdateNoPayOrderStatus( int order_id)
+    {
+        orderListDao.UpdateNoPayOrderStatus(order_id);
+    }
+    public   void UpdatePayOrderStatus( String order_id)
+    {
+        orderListDao.UpdatePayOrderStatus(order_id);
+    }
+
+    public   List<GetAllNoTripData>  GetAllNoTripOrder()
+    {
+        return orderListDao.GetAllNoTripOrder();
+    }
+    public  List<AllOrder>  GetAllNoPayOrder()
+    {
+        return orderListDao.GetAllNoPayOrder();
+    }
+
+    public List<AllOrder> GetAllNoTripOrderByPassenger(String passenger_phone_number)
+    {
+        return orderListDao.GetAllNoTripOrderByPassenger(passenger_phone_number);
+    }
+
 }

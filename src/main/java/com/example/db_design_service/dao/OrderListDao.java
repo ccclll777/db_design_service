@@ -1,6 +1,8 @@
 package com.example.db_design_service.dao;
 
 
+import com.example.db_design_service.bean.AllOrder;
+import com.example.db_design_service.bean.GetAllNoTripData;
 import com.example.db_design_service.bean.GetAllOrderList;
 import com.example.db_design_service.bean.GetOrderList;
 import org.apache.ibatis.annotations.*;
@@ -113,5 +115,21 @@ public interface OrderListDao {
             " order by A.order_create_time")
     List<GetAllOrderList> GetAllOrder();
 
+    @Update("update order_list set order_status = '已出行' where order_status = '未出行' and order_id = #{order_id} ")
+    void UpdatePayOrderStatus(@Param("order_id") String order_id);
+
+
+    @Update("update order_list set order_status = '未完成支付' where order_status = '未支付'and order_id = #{order_id} ")
+    void UpdateNoPayOrderStatus(@Param("order_id") int order_id);
+
+    @Select("select order_id,train_no,start_station_no from order_list where order_status = '未出行' and  to_days(train_start_date) = to_days(now())")
+    List<GetAllNoTripData>  GetAllNoTripOrder();
+
+    @Select("select * from order_list where order_status = '未支付' and  to_days(order_create_time) = to_days(now())")
+    List<AllOrder>  GetAllNoPayOrder();
+
+
+    @Select("select * from order_list where order_status = '未出行' and  passenger_phone_number = #{passenger_phone_number}")
+     List<AllOrder>  GetAllNoTripOrderByPassenger(@Param("passenger_phone_number") String passenger_phone_number);
 
 }

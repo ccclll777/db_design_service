@@ -20,9 +20,10 @@ public class TrainTicketOrderService {
     {
         trainTicketOrderDao.AddOrder(orderList);
     }
-    public List<GetOrderList> getOrderList(String user_phone_number, String datetime, String train_no,  String start_no,  String end_no)
+    public List<GetOrderList> getOrderList(String user_phone_number,  String train_no,  String start_no,  String end_no)
     {
-        return trainTicketOrderDao.GetOrderList(user_phone_number,datetime,train_no,start_no,end_no);
+//        return trainTicketOrderDao.GetOrderList(user_phone_number,datetime,train_no,start_no,end_no);
+        return trainTicketOrderDao.GetOrderList(user_phone_number,train_no,start_no,end_no);
     }
 
     public void UpdateOrderPaySuccess(String order_id)
@@ -44,5 +45,10 @@ public class TrainTicketOrderService {
     public List<AllOrder> getAllOrder()
     {
         return trainTicketOrderDao.getAllOrder();
+    }
+
+    public String getTrainStartTime(String train_no,String station_no)
+    {
+        return  trainTicketOrderDao.getTrainStartTime(train_no,station_no);
     }
 }

@@ -223,6 +223,18 @@ public class UserManagerController {
         return new RespBean(405,"注册失败");
 
     }
+    @RequestMapping(value ="/signout",method = RequestMethod.GET)
+    public RespBean signout() {
+        try {
+
+            return new RespBean(1,"退出成功");
+        }
+        catch (Exception e)
+        {
+            return new RespBean(404,"退出失败");
+        }
+
+    }
 
     /**
      *

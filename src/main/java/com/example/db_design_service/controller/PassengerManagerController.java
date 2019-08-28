@@ -93,6 +93,7 @@ public class PassengerManagerController {
         }
         catch (Exception e)
         {
+            logger.info(e.getMessage());
             return new RespBean(405,"添加失败");
         }
 
@@ -135,6 +136,23 @@ public class PassengerManagerController {
             logger.info(passenger_phone_number);
             List<PassengerInfo> passengerInfoList = passengerService.selectPassengerBynumber(passenger_phone_number);
             return new PassengerInfoReturnData(1,passengerInfoList);
+    }
+
+    @RequestMapping(value ="/deletePassenger",method = RequestMethod.GET)
+    public RespBean deletePassenger(@RequestParam String user_phone_number,String passenger_phone_number) {
+
+
+        try {
+            passengerService.deletePassenger(user_phone_number,passenger_phone_number);
+            return new RespBean(1,"删除成功");
+        }
+        catch (Exception e)
+        {
+            return new RespBean(405,"删除失败");
+        }
+
+
+
     }
 
 }

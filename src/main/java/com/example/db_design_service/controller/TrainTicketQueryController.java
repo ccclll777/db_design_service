@@ -54,6 +54,13 @@ public class TrainTicketQueryController {
         java.text.SimpleDateFormat sdfs =
                 new java.text.SimpleDateFormat("yyyy-MM-dd");
         String currentTime = sdfs.format(dt);
+
+        java.util.Date dt2 = new java.util.Date();
+        java.text.SimpleDateFormat sdfs2 =
+                new java.text.SimpleDateFormat("HH:mm:ss");
+        String currentTime2 = sdfs2.format(dt2);
+
+
         if(datetime.compareTo(currentTime)<0)
         {
             return new TrainTicketPriceQueryReturnData(406,null);
@@ -79,6 +86,7 @@ public class TrainTicketQueryController {
             String high_price  = null;
             String medium_price = null;
             String low_price = null;
+
         for (int i = 0; i < trainTicketPriceInfos.size(); i++) {
             if (trainTicketPriceInfos.get(i) == null || trainTicketPriceInfos.contains(null)) {
                 trainTicketPriceInfos.remove(null);
@@ -162,7 +170,20 @@ public class TrainTicketQueryController {
 
         }
 
+        if(datetime.compareTo(currentTime) == 0)
+        {
 
+            Iterator<TrainTicketPriceInfo> iterator = trainTicketPriceInfos.iterator();
+
+            while (iterator.hasNext())
+            {
+                TrainTicketPriceInfo trainTicketPriceInfo = iterator.next();
+               if(trainTicketPriceInfo.getStart_time().compareTo(currentTime2)<0 )
+               {
+                   iterator.remove();
+               }
+            }
+        }
        if(trainTicketPriceInfos.size() != 0)
        {
            return new TrainTicketPriceQueryReturnData(1,trainTicketPriceInfos);
@@ -253,6 +274,7 @@ public class TrainTicketQueryController {
         String currentTime = sdfs.format(dt);
         if(datetime.compareTo(currentTime)<0)
         {
+            return new TrainTransferTicketPriceReturnData(406,null);
         }
 
         List<TrainTransferSchedule>  trainTransferScheduleList = trainScheduleService.searchTransferSchedule(train_start_station,train_end_station);
