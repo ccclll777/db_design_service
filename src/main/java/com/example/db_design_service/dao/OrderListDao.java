@@ -88,7 +88,7 @@ public interface OrderListDao {
             "A.passenger_phone_number as passenger_phone_number,A.passenger_id_number as passenger_id_number," +
             "A.carriage_no  as carriage_no, C.seat_type as seat_type,A.seat_no as seat_no" +
             " from order_list as A , passenger as B ,seat as C " +
-            " where A.user_phone_number = #{user_phone_number} and A.train_start_date = #{datetime} and A.train_no = #{train_no} and A.start_station_no = #{start_no} " +
+            " where A.user_phone_number = #{user_phone_number} and left(train_start_date,10) = #{datetime} and A.train_no = #{train_no} and A.start_station_no = #{start_no} " +
             " and A.end_station_no = #{end_no} and A.train_no = C.train_no and A.carriage_no = C.carriage_no and A.passenger_phone_number = B.passenger_phone_number and A.order_status = '未支付' and A.passenger_phone_number = #{passenger_phone_number}")
     List<GetOrderList> GetOrderChagngeList(@Param("user_phone_number") String user_phone_number, @Param("datetime") String datetime,
                                     @Param("train_no") String train_no, @Param("start_no") String start_no, @Param("end_no") String end_no,@Param("passenger_phone_number") String passenger_phone_number);

@@ -203,6 +203,7 @@ public class TrainTicketQueryController {
     @RequestMapping(value ="/queryTrainTicketNum",method = RequestMethod.GET)
     public TrainSeatQueryReturnData GetTrainTicketPrice (@RequestParam String datetime, String train_no, String start_no,String end_no,String train_number) {
 
+        logger.info("queryTrainTicketNum");
         java.util.Date dt = new java.util.Date();
          java.text.SimpleDateFormat sdfs =
                 new java.text.SimpleDateFormat("yyyy-MM-dd");
@@ -213,30 +214,34 @@ public class TrainTicketQueryController {
         {
             return new TrainSeatQueryReturnData(404,null,null);
         }
-        List<TrainSeatQuery> trainSeatQuerieList = trainTickerQueryService.queryTrainSeat(train_no,start_no,end_no,datetime);
-        for (TrainSeatQuery trainSeatQuery: trainSeatQuerieList)
-        {
-            logger.info(trainSeatQuery.getCarriage_no() + "   " + trainSeatQuery.getSeat_no());
-        }
+        List<TrainSeatQuery> trainSeatQueriesList = trainTickerQueryService.queryTrainSeat(train_no,start_no,end_no,datetime);
         List<TrainSeatCount> trainSeatCountList  = trainTickerQueryService.querySeatCount(train_no);
 
         List<TrainRemainingSeats_GD> trainRemainingSeats_gds =  new ArrayList<>();
 
         List<TrainRemainingSeats> trainRemainingSeatsList =  new ArrayList<>();
+        logger.info("41412412412");
+        logger.info(train_number.substring(0,1));
             if(train_number.substring(0,1).equals("G") || train_number.substring(0,1).equals("D"))
             {
+                logger.info("777777");
                 for(TrainSeatCount trainSeatCount : trainSeatCountList)
                 {
                     TrainRemainingSeats_GD trainRemainingSeats_gd = new TrainRemainingSeats_GD(trainSeatCount.getCarriage_no(),trainSeatCount.getSeat_type());
                     trainRemainingSeats_gds.add(trainRemainingSeats_gd);
+                    logger.info("88888888");
+                    logger.info(String.valueOf(trainSeatQueriesList.size()));
+                    logger.info(String.valueOf(trainRemainingSeats_gds.size()));
                 }
-                for(TrainSeatQuery trainSeatQuery :trainSeatQuerieList)
+                for(TrainSeatQuery trainSeatQuery :trainSeatQueriesList)
                 {
                     for(TrainRemainingSeats_GD trainRemainingSeats_gd :trainRemainingSeats_gds)
                     {
+                        logger.info(trainRemainingSeats_gd.getCarriage_no() + "    "+ trainSeatQuery.getCarriage_no());
                         if(trainRemainingSeats_gd.getCarriage_no().equals(trainSeatQuery.getCarriage_no()))
                         {
                             trainRemainingSeats_gd.Count(Integer.parseInt(trainSeatQuery.getSeat_no()));
+                            logger.info(trainSeatQuery.getSeat_no());
                         }
                     }
                 }
@@ -248,7 +253,7 @@ public class TrainTicketQueryController {
                     TrainRemainingSeats trainRemainingSeats = new TrainRemainingSeats(trainSeatCount.getCarriage_no(),trainSeatCount.getSeat_type());
                     trainRemainingSeatsList.add(trainRemainingSeats);
                 }
-                for(TrainSeatQuery trainSeatQuery :trainSeatQuerieList)
+                for(TrainSeatQuery trainSeatQuery :trainSeatQueriesList)
                 {
                     for(TrainRemainingSeats trainRemainingSeats :trainRemainingSeatsList)
                     {
@@ -259,6 +264,7 @@ public class TrainTicketQueryController {
                     }
                 }
             }
+
 
 
 

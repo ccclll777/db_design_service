@@ -269,8 +269,11 @@ public class OrderListController {
 
         String data [] = user.split(",");
 
+        datetime = datetime.substring(0,10);
         String user_phone_number = data[1];
+        logger.info(datetime);
         List<GetOrderList> getOrderLists =   orderListService.GetOrderChagngeList(user_phone_number,datetime,train_no,start_no,end_no,passenger_phone_number);
+        logger.info(String.valueOf(getOrderLists.size()));
         for(GetOrderList getOrderList:getOrderLists)
         {
             getOrderList.setSeat_no(GetResult_Seat_no(getOrderList.getSeat_type(), Integer.parseInt(getOrderList.getSeat_no())));

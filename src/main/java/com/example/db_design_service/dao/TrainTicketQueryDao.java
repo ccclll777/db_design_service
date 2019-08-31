@@ -80,16 +80,16 @@ public interface TrainTicketQueryDao {
 
     @Select("  select train_no, carriage_no , seat_no from order_list" +
             "                            where    start_station_no < #{start_no} and end_station_no > #{start_no} " +
-            "                               and train_no = #{train_no} and train_start_date = #{datetime} and order_status <> '已退票' and order_status <> '已改签' " +
+            "                               and train_no = #{train_no} and left(train_start_date,10) = #{datetime} and order_status <> '已退票' and order_status <> '已改签' and order_status <> '未完成支付'" +
             "                                     union select train_no,carriage_no , seat_no from order_list " +
             "                                    where  start_station_no < #{end_no} and end_station_no > #{end_no}  " +
-            "                                    and train_no = #{train_no} and train_start_date = #{datetime} and order_status <> '已退票' and order_status <> '已改签' " +
+            "                                    and train_no = #{train_no} and left(train_start_date,10) = #{datetime} and order_status <> '已退票' and order_status <> '已改签' and order_status <> '未完成支付'" +
             "                                    union select train_no,carriage_no , seat_no from order_list " +
-            "                               where start_station_no > #{start_no} and  end_station_no < #{end_no}  and order_status <> '已退票' and order_status <> '已改签' " +
-            "                                 and train_no = #{train_no} and train_start_date = #{datetime}" +
+            "                               where start_station_no > #{start_no} and  end_station_no < #{end_no}  and order_status <> '已退票' and order_status <> '已改签' and order_status <> '未完成支付' " +
+            "                                 and train_no = #{train_no} and left(train_start_date,10) = #{datetime}" +
             " union select train_no,carriage_no , seat_no from order_list " +
             "                                       where start_station_no = #{start_no} and  end_station_no = #{end_no} " +
-            "                                            and train_no = #{train_no} and train_start_date = #{datetime} and order_status <> '已退票' and order_status <> '已改签'  ")
+            "                                            and train_no = #{train_no} and left(train_start_date,10) = #{datetime} and order_status <> '已退票' and order_status <> '已改签'  and order_status <> '未完成支付'")
     List<TrainSeatQuery> querySeatOrder(@Param("train_no") String train_no , @Param("start_no") String start_no ,@Param("end_no") String end_no ,@Param("datetime") String datetime);
 
     /**
@@ -128,16 +128,16 @@ public interface TrainTicketQueryDao {
      * @return
      */
     @Select("  select train_no, carriage_no , seat_no from order_list" +
-            "                            where    start_station_no < #{start_no} and end_station_no > #{start_no} and order_status <> '已退票' and order_status <> '已改签' " +
-            "                               and train_no = #{train_no} and train_start_date = #{datetime} and carriage_no = #{carriage_no}" +
+            "                            where    start_station_no < #{start_no} and end_station_no > #{start_no} and order_status <> '已退票' and order_status <> '已改签' and order_status <> '未完成支付'  " +
+            "                               and train_no = #{train_no} and left(train_start_date,10) = #{datetime} and carriage_no = #{carriage_no}" +
             "                                     union select train_no,carriage_no , seat_no from order_list " +
-            "                                    where  start_station_no < #{end_no} and end_station_no > #{end_no}  and order_status <> '已退票' and order_status <> '已改签'  " +
-            "                                    and train_no = #{train_no} and train_start_date = #{datetime} and carriage_no = #{carriage_no}" +
+            "                                    where  start_station_no < #{end_no} and end_station_no > #{end_no}  and order_status <> '已退票' and order_status <> '已改签' and order_status <> '未完成支付'  " +
+            "                                    and train_no = #{train_no} and left(train_start_date,10) = #{datetime} and carriage_no = #{carriage_no}" +
             "                                    union select train_no,carriage_no , seat_no from order_list " +
-            "                               where start_station_no > #{start_no} and  end_station_no < #{end_no} and order_status <> '已退票' and order_status <> '已改签'  " +
-            "                                 and train_no = #{train_no} and train_start_date = #{datetime} and carriage_no = #{carriage_no}" +
+            "                               where start_station_no > #{start_no} and  end_station_no < #{end_no} and order_status <> '已退票' and order_status <> '已改签'  and order_status <> '未完成支付'" +
+            "                                 and train_no = #{train_no} and left(train_start_date,10) = #{datetime} and carriage_no = #{carriage_no}" +
             " union select train_no,carriage_no , seat_no from order_list " +
             "                                       where start_station_no = #{start_no} and  end_station_no = #{end_no} " +
-            "                                            and train_no = #{train_no} and train_start_date = #{datetime}  and carriage_no = #{carriage_no} and order_status <> '已退票' and order_status <> '已改签' ")
+            "                                            and train_no = #{train_no} and left(train_start_date,10) = #{datetime}  and carriage_no = #{carriage_no} and order_status <> '已退票' and order_status <> '已改签'and order_status <> '未完成支付' ")
     List<TrainSeatQuery> QueryCarriageSeatQuery (@Param("train_no")String train_no ,@Param("carriage_no") String carriage_no ,@Param("start_no") String start_no ,@Param("end_no") String end_no ,@Param("datetime") String datetime);
 }

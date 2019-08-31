@@ -63,7 +63,7 @@ public interface TrainTicketOrderDao {
 
 
 
-    @Select("select * from order_list where user_phone_number = #{user_phone_number} and train_start_date = #{train_start_date} and passenger_phone_number = #{passenger_phone_number}")
+    @Select("select * from order_list where user_phone_number = #{user_phone_number} and train_start_date = #{train_start_date} and passenger_phone_number = #{passenger_phone_number} and order_status <> '未出行' ")
     List<OrderList> getOrderListByStartTime(@Param("user_phone_number") String user_phone_number,@Param("passenger_phone_number") String passenger_phone_number,@Param("train_start_date") String train_start_date);
 
 

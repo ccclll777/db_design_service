@@ -68,6 +68,7 @@ public class TrainTicketOrderController {
 
 
         String start_time_hour = trainTicketOrderService.getTrainStartTime(train_no,start_no);
+        datetime = datetime.substring(0,10);
         datetime = datetime+" "+start_time_hour+":00";
 
         String curtime = datetime;
@@ -97,9 +98,6 @@ public class TrainTicketOrderController {
         List<AllOrder> passenger_all_orderList = orderListService.GetAllNoTripOrderByPassenger(passenger_phone_number);
         for(AllOrder passenger_order:passenger_all_orderList)
         {
-            logger.info("666666"+passenger_order.getTrain_start_date().substring(0,10));
-            logger.info("88888"+curtime.substring(0,10));
-            logger.info(String.valueOf(passenger_order.getTrain_start_date().substring(0,10).compareTo(curtime.substring(0,10)) ==0));
             if(passenger_order.getTrain_start_date().substring(0,10).compareTo(curtime.substring(0,10)) ==0)
             {
                 String old_start_time = trainTicketOrderService.getTrainStartTime(passenger_order.getTrain_no(),passenger_order.getStart_station_no());
