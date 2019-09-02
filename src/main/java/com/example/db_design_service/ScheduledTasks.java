@@ -65,7 +65,6 @@ public class ScheduledTasks {
             if(order_create_date.compareTo(String.valueOf(dateFormat)) >0)
             {
                 orderListService.UpdateNoPayOrderStatus(allNppay.getOrder_id());
-                System.out.println("2222：" + order_create_date);
             }
 
         }
