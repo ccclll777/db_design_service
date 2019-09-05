@@ -2,6 +2,7 @@ package com.example.db_design_service.dao;
 
 import com.example.db_design_service.bean.SeatInfo;
 import com.example.db_design_service.bean.TrainInfo;
+import com.example.db_design_service.bean.TrainParkingInfo;
 import com.example.db_design_service.bean.User;
 import org.apache.ibatis.annotations.*;
 
@@ -62,4 +63,20 @@ public interface TrainInfoDao {
 
     @Select("select train_number from train_info")
     List<String> selectAllTrainNumber();
+
+
+    @Insert("insert into train_info (train_no,train_number,train_type,train_carriages,train_start_station,train_end_station," +
+            "train_start_time,train_end_time,train_arrive_day,train_running_time,train_running_type) values (#{trainInfo.train_no}," +
+            "#{trainInfo.train_number},#{trainInfo.train_type},#{trainInfo.train_carriages},#{trainInfo.train_start_station}," +
+            "#{trainInfo.train_end_station},#{trainInfo.train_start_time},#{trainInfo.train_end_time},#{trainInfo.train_arrive_day}," +
+            "#{trainInfo.train_running_time},#{trainInfo.train_running_type})")
+    void AddTrainInfo(@Param("trainInfo") TrainInfo trainInfo);
+
+
+    @Insert("insert into train_parking_station (train_no,train_number,arrive_day_str,arrive_time,start_time,running_time," +
+            "station_no,station_name) values (#{train_no},#{trainInfo.train_number}," +
+            "#{trainInfo.arrive_day_str},#{trainInfo.arrive_time}," +
+            "#{trainInfo.start_time},#{trainInfo.running_time}," +
+            "#{trainInfo.station_no},#{trainInfo.station_name})")
+    void AddTrainStation(@Param("trainInfo") TrainParkingInfo trainParkingInfo,@Param("train_no") String train_no);
 }

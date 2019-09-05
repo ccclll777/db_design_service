@@ -2,6 +2,7 @@ package com.example.db_design_service.service;
 
 import com.example.db_design_service.bean.SeatInfo;
 import com.example.db_design_service.bean.TrainInfo;
+import com.example.db_design_service.bean.TrainParkingInfo;
 import com.example.db_design_service.dao.TrainInfoDao;
 import org.springframework.stereotype.Service;
 
@@ -77,5 +78,15 @@ public class TrainInfoService {
     public  List<String> selectAllTrainNumber()
     {
         return trainInfoDao.selectAllTrainNumber();
+    }
+
+    public void AddTrainInfo(TrainInfo trainInfo)
+    {
+        trainInfoDao.AddTrainInfo(trainInfo);
+    }
+    public void AddTrainStation(TrainParkingInfo trainParkingInfo,String train_no)
+    {
+
+        trainInfoDao.AddTrainStation(trainParkingInfo,train_no);
     }
 }

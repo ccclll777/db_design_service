@@ -7,13 +7,17 @@ import com.example.db_design_service.service.TrainInfoService;
 import com.example.db_design_service.service.TrainParkingStationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -230,5 +234,70 @@ public class TrainInfoSelectController {
 
         }
     }
+    @RequestMapping(value ="/addTrainInfo",method = RequestMethod.POST)
+    public RespBean UserLogin(@Valid @RequestBody Map<String,Object> request, BindingResult bindingResult) {
+
+
+        if (bindingResult.hasErrors()) {
+            System.out.println(bindingResult.getFieldError().getDefaultMessage());
+        }
+        String train_no = (String) request.get("train_no");
+        String train_number = (String) request.get("train_number");
+        String train_type = (String) request.get("train_type");
+        String train_carriages = (String) request.get("train_carriages");
+        String train_start_station = (String) request.get("train_start_station");
+        String train_end_station = (String) request.get("train_end_station");
+        String train_start_time = (String) request.get("train_start_time");
+        String train_end_time = (String) request.get("train_end_time");
+        String train_arrive_day = (String) request.get("train_arrive_day");
+        String train_running_time = (String) request.get("train_running_time");
+        String train_running_type = (String) request.get("train_running_type");
+
+        try
+        {
+            TrainInfo trainInfo = new TrainInfo(train_no,train_number,train_type,train_carriages,train_start_station,train_end_station,train_start_time,train_end_time,train_arrive_day,train_running_time,train_running_type);
+            trainInfoService.AddTrainInfo(trainInfo);
+            return new RespBean(1,"插入成功");
+        }
+        catch (Exception e)
+        {
+            logger.info(e.getMessage());
+            return new RespBean(403,"插入失败");
+        }
+
+    }
+
+
+    @RequestMapping(value ="/addTrainStation",method = RequestMethod.POST)
+    public RespBean addTrainStation(@Valid @RequestBody Map<String,Object> request, BindingResult bindingResult) {
+
+
+        if (bindingResult.hasErrors()) {
+            System.out.println(bindingResult.getFieldError().getDefaultMessage());
+        }
+        String train_no = (String) request.get("train_no");
+        String train_number = (String) request.get("train_number");
+        String station_no = (String) request.get("station_no");
+        String station_name = (String) request.get("station_name");
+        String arrive_time = (String) request.get("arrive_time");
+        String start_time = (String) request.get("start_time");
+        String running_time = (String) request.get("running_time");
+        String arrive_day_str = (String) request.get("arrive_day_str");
+        try
+        {
+            TrainParkingInfo trainParkingInfo = new TrainParkingInfo(station_no,station_name,train_number,start_time,arrive_time,running_time,arrive_day_str);
+            trainInfoService.AddTrainStation(trainParkingInfo,train_no);
+            return new RespBean(1,"插入成功");
+        }catch (Exception e)
+        {
+            logger.info(e.getMessage());
+            return new RespBean(403,"插入失败");
+        }
+
+
+    }
+
+
+
 
 }
